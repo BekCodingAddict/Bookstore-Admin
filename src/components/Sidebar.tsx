@@ -1,27 +1,43 @@
 "use client";
 import { IconChevronsLeft, IconChevronsRight } from "@tabler/icons-react";
 import { NavLink } from "@/components/NavLink";
+import { useState } from "react";
 
 const Sidebar = () => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="w-64 h-screen bg-[#FFFFFF] text-stone-700 shadow-lg position-fixed left-0">
+    <div
+      className={`${
+        isOpen === false ? "w-64" : "w-20"
+      } h-screen bg-[#FFFFFF] text-stone-700 shadow-lg position-fixed left-0`}
+    >
       <div className="flex items-center justify-end p-2">
-        <button type="button" className="p-2 hover:bg-stone-200 rounded-md">
-          <IconChevronsRight />
-        </button>
-
-        <button type="button" className="p-2 hover:bg-stone-200 rounded-md">
-          <IconChevronsLeft />
-        </button>
+        {isOpen === false ? (
+          <button
+            onClick={() => setIsOpen((state) => !state)}
+            type="button"
+            className="p-2 hover:bg-stone-200 rounded-md"
+          >
+            <IconChevronsLeft />
+          </button>
+        ) : (
+          <button
+            onClick={() => setIsOpen((state) => !state)}
+            type="button"
+            className="p-2 hover:bg-stone-200 rounded-md"
+          >
+            <IconChevronsRight />
+          </button>
+        )}
       </div>
       <div className="p-4 text-2xl font-semibold">Dashboard</div>
       <ul className="mt-8 space-y-4 px-4">
         <li>
           <NavLink
             href="/"
-            className="flex items-center p-3 hover:bg-stone-200 rounded-md active:bg-stone-200"
+            className="flex items-center p-3 hover:bg-stone-200 rounded-md active:bg-stone-200 text-xl"
           >
-            📚 <span className="ml-2"> Books</span>
+            📚 {isOpen === false && <span className="ml-2"> Books</span>}
           </NavLink>
         </li>
         <li>
@@ -29,7 +45,7 @@ const Sidebar = () => {
             href="/orders"
             className="flex items-center p-3 hover:bg-stone-200 rounded-md "
           >
-            📑 <span className="ml-2"> Orders</span>
+            📑 {isOpen === false && <span className="ml-2"> Orders</span>}
           </NavLink>
         </li>
         <li>
@@ -37,7 +53,7 @@ const Sidebar = () => {
             href="/users"
             className="flex items-center p-3 hover:bg-stone-200 rounded-md "
           >
-            🙍‍♂️ <span className="ml-2"> Users</span>
+            🙍‍♂️{isOpen === false && <span className="ml-2"> Users</span>}
           </NavLink>
         </li>
         <li>
@@ -45,7 +61,7 @@ const Sidebar = () => {
             href="settings"
             className="flex items-center p-3 hover:bg-stone-200 rounded-md "
           >
-            ⚙ <span className="ml-2"> Settings</span>
+            ⚙ {isOpen === false && <span className="ml-2"> Settings</span>}
           </NavLink>
         </li>
       </ul>
