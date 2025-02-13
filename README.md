@@ -23,3 +23,45 @@
 ### 4. 보너스 과제 (선택사항)
 - [ ] 핵심 기능에 대한 기본적인 테스트 작성
   - [ ] 예: 책 추가/삭제, 책 목록 조회의 정상 동작 테스트
+
+## Folder Structure:
+```arduino
+📁 my-bookstore-admin-app/
+│
+├── 📁 app/
+│   ├── 📁 dashboard/                     # 대시보드 관련 페이지
+│   │   ├── 📄 page.tsx                   # 대시보드 페이지
+│   │   └── 📄 layout.tsx                 # 대시보드 레이아웃
+│   ├── 📁 books/                         # 책 관련 페이지
+│   │   ├── 📄 page.tsx                   # 책 목록 페이지
+│   │   ├── 📄 [id].tsx                   # 책 상세 정보 페이지
+│   │   └── 📄 layout.tsx                 # 책 관련 레이아웃
+│   ├── 📁 auth/                          # 인증 관련 페이지
+│   │   ├── 📄 login.tsx                  # 로그인 페이지
+│   │   └── 📄 signup.tsx                 # 회원가입 페이지
+│   └── 📄 layout.tsx                     # 전역 레이아웃
+│
+├── 📁 components/                        # 재사용 가능한 컴포넌트들
+│   ├── 📄 Header.tsx                     # 헤더 컴포넌트
+│   ├── 📄 Sidebar.tsx                    # 사이드바 컴포넌트
+│   └── 📄 BookCard.tsx                   # 책 카드 컴포넌트
+│
+├── 📁 public/                            # 정적 파일 (이미지, 폰트 등)
+│   └── 📁 images/                        # 이미지 폴더
+│       └── 📄 logo.png                   # 로고 이미지
+│
+├── 📁 src/                               # 실제 소스 코드 (optional)
+│   ├── 📁 hooks/                         # 커스텀 훅
+│   ├── 📁 types/                         # 타입 정의
+│   └── 📁 utils/                         # 유틸리티 함수들
+│
+├── 📁 styles/                            # CSS 파일 (Tailwind CSS 포함)
+│   └── 📄 globals.css                    # 전역 스타일
+│
+├── 📄 .gitignore                         # Git 무시 파일
+├── 📄 README.md                          # 프로젝트 설명
+├── 📄 tsconfig.json                      # TypeScript 설정
+├── 📄 next.config.js                     # Next.js 설정
+└── 📄 package.json                       # 프로젝트 설정 및 의존성
+
+```
