@@ -2,7 +2,7 @@ import Book from "@models/Book";
 import { connectDB } from "@utils/connectToDb";
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (req: NextRequest) => {
+export const GET = async () => {
   try {
     await connectDB();
     const books = await Book.findAll();

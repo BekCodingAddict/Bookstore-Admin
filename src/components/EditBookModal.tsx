@@ -9,8 +9,10 @@ export default function EditBookModal({
 }) {
   const searchParams = useSearchParams();
   const bookId = searchParams.get("edit");
-  const [book, setBook] = useState(null);
-  const [formData, setFormData] = useState({
+  const router = useRouter();
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  const initialFormData = {
     title: "",
     author: "",
     price: "",
@@ -18,26 +20,27 @@ export default function EditBookModal({
     inStock: "",
     imageUrl: "",
     description: "",
-  });
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
 
   useEffect(() => {
-    const getBookById = async (bookId: number) => {
+    const fetchBook = async (id: string) => {
       try {
-        const response = await fetch(`/api/books/${bookId}`);
+        const response = await fetch(`/api/books/${id}`);
         if (!response.ok) {
           console.log("Book not found");
           return;
         }
         const bookData = await response.json();
-        setBook(bookData);
         setFormData({
-          title: bookData.title,
-          author: bookData.author,
-          price: bookData.price,
-          category: bookData.category.join(", "),
-          inStock: bookData.inStock,
-          imageUrl: bookData.imageUrl,
-          description: bookData.description,
+          title: bookData.title || "",
+          author: bookData.author || "",
+          price: bookData.price || "",
+          category: bookData.category || "",
+          inStock: bookData.inStock || "",
+          imageUrl: bookData.imageUrl || "",
+          description: bookData.description || "",
         });
       } catch (error) {
         console.log("Failed to fetch a book! Error:", error);
@@ -45,49 +48,39 @@ export default function EditBookModal({
     };
 
     if (bookId) {
-      getBookById(Number(bookId));
+      fetchBook(String(bookId));
+    } else {
+      setFormData(initialFormData);
     }
   }, [bookId]);
 
-  const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const formData = new FormData(e.target);
-      const newBook = {
-        title: formData.get("title"),
-        author: formData.get("author"),
-        price: formData.get("price"),
-        category: formData.get("category"),
-        inStock: formData.get("inStock"),
-        imageUrl: formData.get("imageUrl"),
-        description: formData.get("description"),
-      };
-      const response = await fetch(`api/books`, {
-        method: "POST",
+      const response = await fetch(`/api/books${bookId ? "/" + bookId : ""}`, {
+        method: bookId ? "PUT" : "POST",
         headers: {
-          "Context-Type": "application/json",
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(newBook),
+        body: JSON.stringify(formData),
       });
 
-      if (response.ok) {
+      if (response.ok && onClose) {
         router.push("/books");
+        onClose(false);
       } else {
-        throw new Error("Failed to add new book!");
+        throw new Error("Failed to submit book data!");
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const ref = useRef<HTMLDivElement | null>(null);
-  const router = useRouter();
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -103,100 +96,51 @@ export default function EditBookModal({
           {bookId ? "✏️ Edit Book" : "➕ Add New Book"}
         </h2>
 
-        {/* Form Inputs */}
         <div className="space-y-4">
-          <div className="flex gap-2 flex-col">
-            <label htmlFor="title">Book Title</label>
-            <input
-              type="text"
-              name="title"
-              id="title"
-              value={formData.title}
-              onChange={handleChange}
-              className="w-full px-2 py-2 border rounded"
-              placeholder="Book Title"
-            />
-          </div>
-
-          <div className="flex gap-2 flex-col">
-            <label htmlFor="author">Author</label>
-            <input
-              type="text"
-              name="author"
-              id="author"
-              value={formData.author}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded"
-              placeholder="Author"
-            />
-          </div>
-          <div className="flex gap-2 flex-col">
-            <label htmlFor="price">Price</label>
-            <input
-              type="number"
-              name="price"
-              id="price"
-              value={formData.price}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded"
-              placeholder="Price"
-            />
-          </div>
-          <div className="flex gap-2 flex-col">
-            <label htmlFor="category">Category</label>
-            <input
-              type="text"
-              name="category"
-              id="category"
-              value={formData.category}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded"
-              placeholder="Categories (comma separated)"
-            />
-          </div>
-          <div className="flex gap-2 flex-col">
-            <label htmlFor="inStock">Quantity</label>
-            <input
-              type="number"
-              name="inStock"
-              id="inStock"
-              value={formData.inStock}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded"
-              placeholder="Stock Quantity"
-            />
-          </div>
-          <div className="flex gap-2 flex-col">
-            <label htmlFor="imageUrl">Image Url</label>
-            <input
-              type="text"
-              name="imageUrl"
-              id="imageUrl"
-              value={formData.imageUrl}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded"
-              placeholder="Image Url"
-            />
-          </div>
-          <div className="flex gap-2 flex-col">
-            <label htmlFor="description">Description</label>
-            <textarea
-              rows={4}
-              type="text"
-              name="description"
-              id="description"
-              value={formData.description}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded"
-              placeholder="Description"
-              style={{ resize: "none" }}
-            />
-          </div>
+          {[
+            "title",
+            "author",
+            "price",
+            "category",
+            "inStock",
+            "imageUrl",
+            "description",
+          ].map((field) => (
+            <div key={field} className="flex gap-2 flex-col">
+              <label htmlFor={field}>
+                {field.charAt(0).toUpperCase() + field.slice(1)}
+              </label>
+              {field === "description" ? (
+                <textarea
+                  rows={4}
+                  name={field}
+                  id={field}
+                  value={formData[field as keyof typeof formData]}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border rounded"
+                  placeholder={`Enter ${field}`}
+                  style={{ resize: "none" }}
+                />
+              ) : (
+                <input
+                  type={
+                    field === "price" || field === "inStock" ? "number" : "text"
+                  }
+                  name={field}
+                  id={field}
+                  value={formData[field as keyof typeof formData]}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border rounded"
+                  placeholder={`Enter ${field}`}
+                />
+              )}
+            </div>
+          ))}
         </div>
 
-        {/* Buttons */}
         <div className="mt-6 flex justify-end gap-4">
           <button
+            type="button"
             className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
             onClick={() => {
               if (onClose) onClose(false);

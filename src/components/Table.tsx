@@ -6,33 +6,6 @@ import OptionsModal from "./OptionsModal";
 import EditBookModal from "./EditBookModal";
 import { Book } from "@src/types/book";
 
-export const Books = [
-  {
-    id: 1,
-    title: "Atomic Habits",
-    image:
-      "https://images-us.bookshop.org/ingram/9780735211292.jpg?width=384&v=v2",
-    author: "James Clear",
-    price: 22,
-    category: ["habits", "motivation", "self-improve"],
-    inStock: 12,
-    description:
-      "Thoughtful and easy to understand, James Clear’s Atomic Habits is a must for anyone trying to change their productivity. This simple guide will help create a strong foundation for building good habits and make it easy to say goodbye to bad habits for good.",
-  },
-  {
-    id: 2,
-    title: "Atomic Habits",
-    image:
-      "https://images-us.bookshop.org/ingram/9780735211292.jpg?width=384&v=v2",
-    author: "James Clear",
-    price: 22,
-    category: ["habits", "motivation", "self-improve"],
-    inStock: 12,
-    description:
-      "Thoughtful and easy to understand, James Clear’s Atomic Habits is a must for anyone trying to change their productivity. This simple guide will help create a strong foundation for building good habits and make it easy to say goodbye to bad habits for good.",
-  },
-];
-
 const Table = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editMidalOpen, setEditModalOpen] = useState(false);
@@ -71,7 +44,7 @@ const Table = () => {
       try {
         const response = await fetch("/api/books");
         const books = await response.json();
-        console.log(books);
+
         if (!response.ok) {
           console.log("Books not found");
           return [];
@@ -108,10 +81,10 @@ const Table = () => {
             >
               <td className="py-3 px-6">
                 <Image
-                  src="https://images-us.bookshop.org/ingram/9780735211292.jpg?width=384&v=v2"
-                  alt="Atomic Habits"
+                  src={book.imageUrl}
+                  alt="Book image"
                   className="w-14 h-20 rounded-md object-cover"
-                  width={40} // Correct (number)
+                  width={40}
                   height={40}
                 />
               </td>
@@ -122,8 +95,8 @@ const Table = () => {
                   {book.category}
                 </span>
               </td>
-              <td className="py-3 px-6 text-center">$22</td>
-              <td className="py-3 px-6 text-center">12</td>
+              <td className="py-3 px-6 text-center">${book.price}</td>
+              <td className="py-3 px-6 text-center">{book.inStock}</td>
               <td className="py-3 px-6 text-center">
                 <button
                   onClick={(e) => {
