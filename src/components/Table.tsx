@@ -4,10 +4,38 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import OptionsModal from "./OptionsModal";
 
+export const Books = [
+  {
+    id: 1,
+    title: "Atomic Habits",
+    image:
+      "https://images-us.bookshop.org/ingram/9780735211292.jpg?width=384&v=v2",
+    author: "James Clear",
+    price: 22,
+    category: ["habits", "motivation", "self-improve"],
+    inStock: 12,
+    description:
+      "Thoughtful and easy to understand, James Clear’s Atomic Habits is a must for anyone trying to change their productivity. This simple guide will help create a strong foundation for building good habits and make it easy to say goodbye to bad habits for good.",
+  },
+  {
+    id: 2,
+    title: "Atomic Habits",
+    image:
+      "https://images-us.bookshop.org/ingram/9780735211292.jpg?width=384&v=v2",
+    author: "James Clear",
+    price: 22,
+    category: ["habits", "motivation", "self-improve"],
+    inStock: 12,
+    description:
+      "Thoughtful and easy to understand, James Clear’s Atomic Habits is a must for anyone trying to change their productivity. This simple guide will help create a strong foundation for building good habits and make it easy to say goodbye to bad habits for good.",
+  },
+];
+
 const Table = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalPosition, setModalPosition] = useState({ top: 0 });
   const modalRef = useRef<HTMLDivElement | null>(null);
+  const [selectedBook, setSeletcedBook] = useState<number | null>(null);
 
   const openModal = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -50,64 +78,43 @@ const Table = () => {
         </thead>
 
         <tbody className="text-gray-700 text-sm ">
-          <tr className="border-b border-gray-200 hover:bg-gray-100">
-            <td className="py-3 px-6">
-              <Image
-                src="https://images-us.bookshop.org/ingram/9780735211292.jpg?width=384&v=v2"
-                alt="Atomic Habits"
-                className="w-14 h-20 rounded-md object-cover"
-                width={40} // Correct (number)
-                height={40}
-              />
-            </td>
-            <td className="py-3 px-6">Atomic Habits</td>
-            <td className="py-3 px-6">James Clear</td>
-            <td className="py-3 px-6 text-center">
-              <span className="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs">
-                Self-Improve
-              </span>
-            </td>
-            <td className="py-3 px-6 text-center">$22</td>
-            <td className="py-3 px-6 text-center">12</td>
-            <td className="py-3 px-6 text-center">
-              <button
-                onClick={openModal}
-                type="button"
-                className=" hover:underline mr-2"
-              >
-                <IconDots />
-              </button>
-            </td>
-          </tr>
-          <tr className="border-b border-gray-200 hover:bg-gray-100">
-            <td className="py-3 px-6">
-              <Image
-                src="https://images-us.bookshop.org/ingram/9780735211292.jpg?width=384&v=v2"
-                alt="Atomic Habits"
-                className="w-14 h-20 rounded-md object-cover"
-                width={40} // Correct (number)
-                height={40}
-              />
-            </td>
-            <td className="py-3 px-6">Atomic Habits</td>
-            <td className="py-3 px-6">James Clear</td>
-            <td className="py-3 px-6 text-center">
-              <span className="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs">
-                Self-Improve
-              </span>
-            </td>
-            <td className="py-3 px-6 text-center">$22</td>
-            <td className="py-3 px-6 text-center">12</td>
-            <td className="py-3 px-6 text-center">
-              <button
-                onClick={openModal}
-                type="button"
-                className=" hover:underline mr-2"
-              >
-                <IconDots />
-              </button>
-            </td>
-          </tr>
+          {Books.map((book) => (
+            <tr
+              key={book.id}
+              className="border-b border-gray-200 hover:bg-gray-100"
+            >
+              <td className="py-3 px-6">
+                <Image
+                  src="https://images-us.bookshop.org/ingram/9780735211292.jpg?width=384&v=v2"
+                  alt="Atomic Habits"
+                  className="w-14 h-20 rounded-md object-cover"
+                  width={40} // Correct (number)
+                  height={40}
+                />
+              </td>
+              <td className="py-3 px-6">Atomic Habits</td>
+              <td className="py-3 px-6">James Clear</td>
+              <td className="py-3 px-6 text-center">
+                <span className="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs">
+                  Self-Improve
+                </span>
+              </td>
+              <td className="py-3 px-6 text-center">$22</td>
+              <td className="py-3 px-6 text-center">12</td>
+              <td className="py-3 px-6 text-center">
+                <button
+                  onClick={(e) => {
+                    openModal(e);
+                    setSeletcedBook(book.id);
+                  }}
+                  type="button"
+                  className=" hover:underline mr-2"
+                >
+                  <IconDots />
+                </button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
       {modalOpen && (
@@ -115,6 +122,7 @@ const Table = () => {
           modalRef={modalRef}
           modalPosition={modalPosition}
           setModalOpen={setModalOpen}
+          selectedBook={selectedBook}
         />
       )}
     </>
