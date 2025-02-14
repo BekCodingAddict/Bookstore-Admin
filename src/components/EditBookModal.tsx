@@ -12,14 +12,20 @@ export default function EditBookModal({
   const bookId = searchParams.get("edit");
 
   const book = bookId ? Books.find((book) => book.id === Number(bookId)) : null;
-  console.log(book);
+
   const [formData, setFormData] = useState({
     title: book ? book.title : "",
     author: book ? book.author : "",
     price: book ? book.price : "",
     category: book ? book.category.join(", ") : "",
     inStock: book ? book.inStock : "",
+    imageUrl: book ? book.imageUrl : "",
+    description: book ? book.description : "",
   });
+
+  const handleSubmit = (e) => {
+    console.log(e);
+  };
 
   const ref = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
@@ -34,7 +40,10 @@ export default function EditBookModal({
       ref={ref}
       className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md flex justify-center items-center p-4"
     >
-      <div className="bg-white w-full max-w-lg rounded-lg shadow-lg p-6">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white w-full max-w-lg rounded-lg shadow-lg p-6"
+      >
         <h2 className="text-xl font-bold text-gray-800 mb-4">
           {bookId ? "✏️ Edit Book" : "➕ Add New Book"}
         </h2>
@@ -102,6 +111,32 @@ export default function EditBookModal({
               placeholder="Stock Quantity"
             />
           </div>
+          <div className="flex gap-2 flex-col">
+            <label htmlFor="imageUrl">Image Url</label>
+            <input
+              type="number"
+              name="imageUrl"
+              id="imageUrl"
+              value={formData.inStock}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded"
+              placeholder="Image Url"
+            />
+          </div>
+          <div className="flex gap-2 flex-col">
+            <label htmlFor="description">Description</label>
+            <textarea
+              rows={4}
+              type="number"
+              name="description"
+              id="description"
+              value={formData.inStock}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded"
+              placeholder="Description"
+              style={{ resize: "none" }}
+            />
+          </div>
         </div>
 
         {/* Buttons */}
@@ -122,7 +157,7 @@ export default function EditBookModal({
             💾 {bookId ? "Save Changes" : "Add New Book"}
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

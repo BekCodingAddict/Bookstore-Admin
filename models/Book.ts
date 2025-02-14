@@ -12,10 +12,6 @@ const Book = sequelize.define("books", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  image: {
-    type: DataTypes.STRING, // Store image URL as a string
-    allowNull: true,
-  },
   author: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -32,6 +28,10 @@ const Book = sequelize.define("books", {
     type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 0, // Default stock to 0 if not provided
+  },
+  imageUrl: {
+    type: DataTypes.STRING, // Store image URL as a string
+    allowNull: true,
   },
   description: {
     type: DataTypes.TEXT, // Text type for long descriptions

@@ -1,7 +1,8 @@
 "use client";
 import { IconChevronsLeft, IconChevronsRight } from "@tabler/icons-react";
-import { NavLink } from "@/components/NavLink";
+
 import { useState } from "react";
+import { NavLink } from "./NavLink";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
