@@ -31,7 +31,6 @@ const BookDetailsPage = async ({ params }: { params: { bookId: string } }) => {
   const bookId = await Number(params.bookId); // Ensures a valid number
   const book = Books?.find((book) => book.id === bookId);
   // if (!book) return redirect("/dashboard");
-  // max-w-4xl mx-auto px-4 py-8
 
   return (
     <div className=" w-full border-collapse bg-white shadow-lg h-full rounded-md">
@@ -137,66 +136,3 @@ const BookDetailsPage = async ({ params }: { params: { bookId: string } }) => {
 };
 
 export default BookDetailsPage;
-
-const EditModal = () => {
-  return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
-      <div className="flex flex-col md:flex-row gap-6">
-        {/* Book Image */}
-        <div className="w-full md:w-1/3">
-          <Image
-            src={book.image}
-            alt={book.title}
-            width={200}
-            height={300}
-            className="rounded-lg object-cover"
-          />
-        </div>
-
-        {/* Book Details */}
-        <div className="flex-1">
-          <h1 className="text-2xl font-bold text-gray-800">{book.title}</h1>
-          <p className="text-gray-600 text-sm">by {book.author}</p>
-
-          {/* Price */}
-          <p className="mt-4 text-xl font-semibold text-blue-600">
-            ${book.price}
-          </p>
-
-          {/* Categories */}
-          <div className="mt-2 flex gap-2">
-            {book.category.map((tag) => (
-              <span
-                key={tag}
-                className="bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-
-          {/* Quantity Selector */}
-          <div className="mt-4 flex items-center gap-4">
-            <button className="px-3 py-1 text-lg bg-gray-200 rounded hover:bg-gray-300">
-              ➖
-            </button>
-            <span className="text-lg font-semibold">{1}</span>
-            <button className="px-3 py-1 text-lg bg-gray-200 rounded hover:bg-gray-300">
-              ➕
-            </button>
-          </div>
-
-          {/* Buttons */}
-          <div className="mt-6 flex gap-4">
-            <button className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-              🛒 Add to Cart
-            </button>
-            <button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-              ❌ Remove Book
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};

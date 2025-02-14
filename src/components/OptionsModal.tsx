@@ -1,5 +1,6 @@
 import { IconX } from "@tabler/icons-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { RefObject } from "react";
 
 const OptionsModal = ({
@@ -7,12 +8,22 @@ const OptionsModal = ({
   modalPosition,
   setModalOpen,
   selectedBook,
+  setEditModalOpen,
 }: {
   modalRef: RefObject<HTMLDivElement | null>;
   modalPosition: { top: number };
   setModalOpen: (state: boolean) => void;
   selectedBook: number | null;
+  setEditModalOpen: (state: boolean) => void;
 }) => {
+  const router = useRouter();
+
+  const handleEdit = () => {
+    setModalOpen(false);
+    setEditModalOpen(true);
+    router.push(`/books?edit=${selectedBook}`);
+  };
+
   return (
     <div
       ref={modalRef}
@@ -38,7 +49,10 @@ const OptionsModal = ({
           </Link>
         </li>
         <li>
-          <button className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md">
+          <button
+            onClick={handleEdit}
+            className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md"
+          >
             ✏️ Edit Book
           </button>
         </li>

@@ -3,6 +3,7 @@ import { IconDots } from "@tabler/icons-react";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import OptionsModal from "./OptionsModal";
+import EditBookModal from "./EditBookModal";
 
 export const Books = [
   {
@@ -33,6 +34,7 @@ export const Books = [
 
 const Table = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [editMidalOpen, setEditModalOpen] = useState(false);
   const [modalPosition, setModalPosition] = useState({ top: 0 });
   const modalRef = useRef<HTMLDivElement | null>(null);
   const [selectedBook, setSeletcedBook] = useState<number | null>(null);
@@ -123,7 +125,12 @@ const Table = () => {
           modalPosition={modalPosition}
           setModalOpen={setModalOpen}
           selectedBook={selectedBook}
+          setEditModalOpen={setEditModalOpen}
         />
+      )}
+
+      {editMidalOpen && (
+        <EditBookModal book={Books[0]} onClose={setEditModalOpen} />
       )}
     </>
   );

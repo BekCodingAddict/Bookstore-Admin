@@ -34,7 +34,7 @@ const Sidebar = () => {
       <ul className="mt-8 space-y-4 px-4">
         <li>
           <NavLink
-            href="/"
+            href="/dashboard"
             className="flex items-center p-3 hover:bg-stone-200 rounded-md active:bg-stone-200 text-xl"
           >
             📚 {isOpen === false && <span className="ml-2"> Books</span>}
