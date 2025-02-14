@@ -1,8 +1,15 @@
+"use client";
 import { IconPlus } from "@tabler/icons-react";
 import React from "react";
 import Table from "./Table";
+import { useRouter, useSearchParams } from "next/navigation";
+import EditBookModal from "./EditBookModal";
 
 const BookListTable = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const isAddingNewBook = searchParams.get("adding-new-book");
+
   return (
     <div className="flex flex-col gap-2 ">
       <div className="flex flex-row justify-between border-b-2 p-2">
@@ -13,7 +20,10 @@ const BookListTable = () => {
           placeholder="Search book..."
         />
         <button
-          className="flex font-semibold flex-row border-[1px] gap-1 p-2 bg-black text-white rounded-md text-sm hover:bg-white hover:text-black hover:border-slate-950 hover:border-[1px]"
+          onClick={() => {
+            router.push("/books?adding-new-book=true");
+          }}
+          className="flex items-center font-semibold flex-row border-[1px] gap-1 p-2 bg-black text-white rounded-md text-sm hover:bg-white hover:text-black hover:border-slate-950 hover:border-[1px]"
           aria-label="Add New Book"
         >
           <IconPlus />
@@ -27,6 +37,8 @@ const BookListTable = () => {
           <Table />
         </div>
       </div>
+
+      {isAddingNewBook && <EditBookModal />}
     </div>
   );
 };
