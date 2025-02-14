@@ -1,7 +1,6 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useRef, useState } from "react";
-import { Books } from "./Table";
+import { useEffect, useRef, useState } from "react";
 
 export default function EditBookModal({
   onClose,
@@ -10,27 +9,83 @@ export default function EditBookModal({
 }) {
   const searchParams = useSearchParams();
   const bookId = searchParams.get("edit");
-
-  const book = bookId ? Books.find((book) => book.id === Number(bookId)) : null;
-
+  const [book, setBook] = useState(null);
   const [formData, setFormData] = useState({
-    title: book ? book.title : "",
-    author: book ? book.author : "",
-    price: book ? book.price : "",
-    category: book ? book.category.join(", ") : "",
-    inStock: book ? book.inStock : "",
-    imageUrl: book ? book.imageUrl : "",
-    description: book ? book.description : "",
+    title: "",
+    author: "",
+    price: "",
+    category: "",
+    inStock: "",
+    imageUrl: "",
+    description: "",
   });
 
-  const handleSubmit = (e) => {
-    console.log(e);
+  useEffect(() => {
+    const getBookById = async (bookId: number) => {
+      try {
+        const response = await fetch(`/api/books/${bookId}`);
+        if (!response.ok) {
+          console.log("Book not found");
+          return;
+        }
+        const bookData = await response.json();
+        setBook(bookData);
+        setFormData({
+          title: bookData.title,
+          author: bookData.author,
+          price: bookData.price,
+          category: bookData.category.join(", "),
+          inStock: bookData.inStock,
+          imageUrl: bookData.imageUrl,
+          description: bookData.description,
+        });
+      } catch (error) {
+        console.log("Failed to fetch a book! Error:", error);
+      }
+    };
+
+    if (bookId) {
+      getBookById(Number(bookId));
+    }
+  }, [bookId]);
+
+  const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData(e.target);
+      const newBook = {
+        title: formData.get("title"),
+        author: formData.get("author"),
+        price: formData.get("price"),
+        category: formData.get("category"),
+        inStock: formData.get("inStock"),
+        imageUrl: formData.get("imageUrl"),
+        description: formData.get("description"),
+      };
+      const response = await fetch(`api/books`, {
+        method: "POST",
+        headers: {
+          "Context-Type": "application/json",
+        },
+        body: JSON.stringify(newBook),
+      });
+
+      if (response.ok) {
+        router.push("/books");
+      } else {
+        throw new Error("Failed to add new book!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const ref = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
@@ -114,10 +169,10 @@ export default function EditBookModal({
           <div className="flex gap-2 flex-col">
             <label htmlFor="imageUrl">Image Url</label>
             <input
-              type="number"
+              type="text"
               name="imageUrl"
               id="imageUrl"
-              value={formData.inStock}
+              value={formData.imageUrl}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded"
               placeholder="Image Url"
@@ -127,10 +182,10 @@ export default function EditBookModal({
             <label htmlFor="description">Description</label>
             <textarea
               rows={4}
-              type="number"
+              type="text"
               name="description"
               id="description"
-              value={formData.inStock}
+              value={formData.description}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded"
               placeholder="Description"

@@ -4,6 +4,7 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import OptionsModal from "./OptionsModal";
 import EditBookModal from "./EditBookModal";
+import { Book } from "@src/types/book";
 
 export const Books = [
   {
@@ -37,7 +38,8 @@ const Table = () => {
   const [editMidalOpen, setEditModalOpen] = useState(false);
   const [modalPosition, setModalPosition] = useState({ top: 0 });
   const modalRef = useRef<HTMLDivElement | null>(null);
-  const [selectedBook, setSeletcedBook] = useState<number | null>(null);
+  const [selectedBook, setSeletcedBook] = useState<number>(0);
+  const [books, setBooks] = useState<Book[]>([]);
 
   const openModal = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -64,6 +66,25 @@ const Table = () => {
     };
   }, [modalOpen]);
 
+  useEffect(() => {
+    const fetchAllBooks = async () => {
+      try {
+        const response = await fetch("/api/books");
+        const books = await response.json();
+        console.log(books);
+        if (!response.ok) {
+          console.log("Books not found");
+          return [];
+        }
+        setBooks(books);
+      } catch (error) {
+        console.log("Failed to fetch books! Error:" + error);
+      }
+    };
+
+    fetchAllBooks();
+  }, []);
+
   return (
     <>
       <table className="w-full border-collapse">
@@ -80,7 +101,7 @@ const Table = () => {
         </thead>
 
         <tbody className="text-gray-700 text-sm ">
-          {Books.map((book) => (
+          {books.map((book) => (
             <tr
               key={book.id}
               className="border-b border-gray-200 hover:bg-gray-100"
@@ -94,11 +115,11 @@ const Table = () => {
                   height={40}
                 />
               </td>
-              <td className="py-3 px-6">Atomic Habits</td>
-              <td className="py-3 px-6">James Clear</td>
+              <td className="py-3 px-6 truncate max-w-60">{book.title}</td>
+              <td className="py-3 px-6">{book.author}</td>
               <td className="py-3 px-6 text-center">
                 <span className="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs">
-                  Self-Improve
+                  {book.category}
                 </span>
               </td>
               <td className="py-3 px-6 text-center">$22</td>
