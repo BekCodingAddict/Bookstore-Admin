@@ -1,4 +1,4 @@
-import BookListTable from "@/components/BookListTable";
+import BookListTable from "@src/components/BookListTable";
 import React from "react";
 
 const Dashboard = () => {
