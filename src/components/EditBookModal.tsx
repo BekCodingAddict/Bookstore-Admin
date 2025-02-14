@@ -1,4 +1,5 @@
 "use client";
+
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
@@ -65,9 +66,11 @@ export default function EditBookModal({
         body: JSON.stringify(formData),
       });
 
-      if (response.ok && onClose) {
+      if (response.ok) {
         router.push("/books");
-        onClose(false);
+        location.href = "/books";
+
+        if (onClose) onClose(false);
       } else {
         throw new Error("Failed to submit book data!");
       }

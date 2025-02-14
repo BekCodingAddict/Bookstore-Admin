@@ -57,7 +57,10 @@ const BookDetailsPage = async ({ params }: { params: { bookId: string } }) => {
           </div>
 
           <div className="mt-6 flex gap-4">
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+            <button
+              // onClick={() => {}}
+              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+            >
               ✏️ Edit
             </button>
             <button className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">

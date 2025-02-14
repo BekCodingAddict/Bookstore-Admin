@@ -14,8 +14,8 @@ const Table = () => {
   const [modalPosition, setModalPosition] = useState({ top: 0 });
   const modalRef = useRef<HTMLDivElement | null>(null);
   const [selectedBook, setSeletcedBook] = useState<number>(0);
-  const [books, setBooks] = useState<Book[]>([]);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [books, setBooks] = useState<Book[]>([]);
 
   const router = useRouter();
   const openModal = (event: React.MouseEvent<HTMLButtonElement>) => {

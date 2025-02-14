@@ -1,3 +1,5 @@
+import { useRouter } from "next/navigation";
+
 import { useState } from "react";
 
 const DeleteConfirmationModal = ({
@@ -8,6 +10,7 @@ const DeleteConfirmationModal = ({
   setDeleteModalOpen: (state: boolean) => void;
 }) => {
   const [isDeleting, setIsDeleting] = useState(false);
+  const router = useRouter();
 
   const handleDelete = async () => {
     try {
@@ -21,15 +24,14 @@ const DeleteConfirmationModal = ({
         throw new Error("Failed to delete book!");
       }
 
-      const data = await response.json();
-      if (data) {
-        console.log("Book deleted successfully!");
-        setTimeout(() => {
-          console.log(`Book with ID: ${selectedBook} deleted!`);
-          setDeleteModalOpen(false);
-          setIsDeleting(false);
-        }, 1000);
-      }
+      // const data = await response.json();
+
+      console.log("Book deleted successfully!");
+      setDeleteModalOpen(false);
+      setIsDeleting(false);
+
+      router.push("/books");
+      location.href = "/books";
     } catch (error) {
       console.log("Error:" + error);
       throw new Error(`Error:${error}`);
