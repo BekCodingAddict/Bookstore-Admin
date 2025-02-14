@@ -5,6 +5,8 @@ import React, { useEffect, useRef, useState } from "react";
 import OptionsModal from "./OptionsModal";
 import EditBookModal from "./EditBookModal";
 import { Book } from "@src/types/book";
+import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import { useRouter } from "@node_modules/next/navigation";
 
 const Table = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -13,7 +15,9 @@ const Table = () => {
   const modalRef = useRef<HTMLDivElement | null>(null);
   const [selectedBook, setSeletcedBook] = useState<number>(0);
   const [books, setBooks] = useState<Book[]>([]);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 
+  const router = useRouter();
   const openModal = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
@@ -21,6 +25,12 @@ const Table = () => {
       top: event.clientY,
     });
     setModalOpen(true);
+  };
+
+  const handleDelete = () => {
+    setModalOpen(false);
+    setDeleteModalOpen(true);
+    router.push(`/books?delete=${selectedBook}`);
   };
 
   useEffect(() => {
@@ -120,6 +130,15 @@ const Table = () => {
           setModalOpen={setModalOpen}
           selectedBook={selectedBook}
           setEditModalOpen={setEditModalOpen}
+          handleDelete={handleDelete}
+        />
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {isDeleteModalOpen && (
+        <DeleteConfirmationModal
+          selectedBook={selectedBook}
+          setDeleteModalOpen={setDeleteModalOpen}
         />
       )}
 

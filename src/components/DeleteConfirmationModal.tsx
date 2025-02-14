@@ -9,13 +9,31 @@ const DeleteConfirmationModal = ({
 }) => {
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const handleDelete = () => {
-    setIsDeleting(true);
+  const handleDelete = async () => {
+    try {
+      setIsDeleting(true);
+      const response = await fetch(`/api/books/${selectedBook}`, {
+        method: "DELETE",
+      });
 
-    setTimeout(() => {
-      console.log(`Book with ID: ${selectedBook} deleted!`);
-      setDeleteModalOpen(false);
-    }, 1000);
+      if (!response.ok) {
+        console.log("Failed to delete book!");
+        throw new Error("Failed to delete book!");
+      }
+
+      const data = await response.json();
+      if (data) {
+        console.log("Book deleted successfully!");
+        setTimeout(() => {
+          console.log(`Book with ID: ${selectedBook} deleted!`);
+          setDeleteModalOpen(false);
+          setIsDeleting(false);
+        }, 1000);
+      }
+    } catch (error) {
+      console.log("Error:" + error);
+      throw new Error(`Error:${error}`);
+    }
   };
 
   const handleCancel = () => {

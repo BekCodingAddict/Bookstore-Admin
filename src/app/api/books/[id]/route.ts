@@ -20,7 +20,6 @@ export const GET = async (req: NextRequest, { params }: { params: Params }) => {
 };
 
 //PUT
-
 export const PUT = async (
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -45,6 +44,33 @@ export const PUT = async (
     );
   } catch (error) {
     return new NextResponse(`Failed to update book! Error: ${error}`, {
+      status: 500,
+    });
+  }
+};
+
+// DELETE
+export const DELETE = async (
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) => {
+  try {
+    const { id } = await params;
+    await connectDB();
+
+    const book = await Book.findOne({ where: { id: id } });
+
+    if (!book) {
+      return new NextResponse("Book not found!", { status: 404 });
+    }
+
+    const deletedBook = await book.destroy();
+    return new NextResponse(
+      JSON.stringify({ message: "Book updated successfully!", deletedBook }),
+      { status: 200 }
+    );
+  } catch (error) {
+    return new NextResponse(`Failed to delete book! Error: ${error}`, {
       status: 500,
     });
   }

@@ -15,10 +15,10 @@
 
 ### 2. 백엔드 요구사항
 
-- [ ] RESTful API 설계 및 구현
-  - [ ] 데이터베이스와 통신하여 책 데이터를 CRUD 처리
-  - [ ] 책 정보를 추가, 수정, 삭제, 조회할 수 있는 API 엔드포인트 제공
-  - [ ] Express.js 또는 Next.js API routes 사용
+- [x] RESTful API 설계 및 구현
+  - [x] 데이터베이스와 통신하여 책 데이터를 CRUD 처리
+  - [x] 책 정보를 추가, 수정, 삭제, 조회할 수 있는 API 엔드포인트 제공
+  - [x] Express.js 또는 Next.js API routes 사용
 
 ### 3. 추가 요구사항
 

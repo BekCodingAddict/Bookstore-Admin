@@ -1,8 +1,7 @@
 import { IconX } from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { RefObject, useState } from "react";
-import DeleteConfirmationModal from "./DeleteConfirmationModal"; // Import the new confirmation modal
+import React, { RefObject } from "react";
 
 const OptionsModal = ({
   modalRef,
@@ -10,25 +9,21 @@ const OptionsModal = ({
   setModalOpen,
   selectedBook,
   setEditModalOpen,
+  handleDelete,
 }: {
   modalRef: RefObject<HTMLDivElement | null>;
   modalPosition: { top: number };
   setModalOpen: (state: boolean) => void;
   selectedBook: number | null;
   setEditModalOpen: (state: boolean) => void;
+  handleDelete: () => void;
 }) => {
-  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false); // Manage state for delete confirmation
   const router = useRouter();
 
   const handleEdit = () => {
     setModalOpen(false);
     setEditModalOpen(true);
     router.push(`/books?edit=${selectedBook}`);
-  };
-
-  const handleDelete = () => {
-    setDeleteModalOpen(true); // Open the delete confirmation modal
-    setModalOpen(false); // Close the options modal
   };
 
   return (
@@ -72,14 +67,6 @@ const OptionsModal = ({
           </button>
         </li>
       </ul>
-
-      {/* Delete Confirmation Modal */}
-      {isDeleteModalOpen && (
-        <DeleteConfirmationModal
-          selectedBook={selectedBook}
-          setDeleteModalOpen={setDeleteModalOpen}
-        />
-      )}
     </div>
   );
 };
