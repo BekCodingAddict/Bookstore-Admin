@@ -1,12 +1,16 @@
-export const getBookById = async (bookId: number) => {
+export const getBookById = async (bookId: string) => {
   try {
-    const response = await fetch(`/api/books/${bookId}`);
-    const book = await response.json();
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/books/${bookId}`
+    );
+
     if (!response.ok) {
       console.log("Book not found");
+      return null;
     }
-    return book;
+    return await response.json();
   } catch (error) {
-    console.log("Faild to fetch a book! Error:" + error);
+    console.error("Failed to fetch a book! Error:", error);
+    return null;
   }
 };
