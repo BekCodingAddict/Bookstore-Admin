@@ -8,6 +8,8 @@ import { Book } from "@src/types/book";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import { useRouter } from "@node_modules/next/navigation";
 
+const itemsPerPage = 10;
+
 const Table = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editMidalOpen, setEditModalOpen] = useState(false);
@@ -16,8 +18,21 @@ const Table = () => {
   const [selectedBook, setSeletcedBook] = useState<number>(0);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [books, setBooks] = useState<Book[]>([]);
-
   const router = useRouter();
+  //PAGINATION STATES
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil(books.length / itemsPerPage);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentBooks = books.slice(indexOfFirstItem, indexOfLastItem);
+  const nextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+  const prevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
   const openModal = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
@@ -70,59 +85,91 @@ const Table = () => {
 
   return (
     <>
-      <table className="w-full border-collapse">
-        <thead>
-          <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-            <th className="py-3 px-6 text-left">Cover</th>
-            <th className="py-3 px-6 text-left">Title</th>
-            <th className="py-3 px-6 text-left">Author</th>
-            <th className="py-3 px-6 text-center">Category</th>
-            <th className="py-3 px-6 text-center">Price</th>
-            <th className="py-3 px-6 text-center">Stock</th>
-            <th className="py-3 px-6 text-center">Actions</th>
-          </tr>
-        </thead>
-
-        <tbody className="text-gray-700 text-sm ">
-          {books.map((book) => (
-            <tr
-              key={book.id}
-              className="border-b border-gray-200 hover:bg-gray-100"
-            >
-              <td className="py-3 px-6">
-                <Image
-                  src={book.imageUrl}
-                  alt="Book image"
-                  className="w-14 h-20 rounded-md object-cover"
-                  width={40}
-                  height={40}
-                />
-              </td>
-              <td className="py-3 px-6 truncate max-w-60">{book.title}</td>
-              <td className="py-3 px-6">{book.author}</td>
-              <td className="py-3 px-6 text-center">
-                <span className="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs">
-                  {book.category}
-                </span>
-              </td>
-              <td className="py-3 px-6 text-center">${book.price}</td>
-              <td className="py-3 px-6 text-center">{book.inStock}</td>
-              <td className="py-3 px-6 text-center">
-                <button
-                  onClick={(e) => {
-                    openModal(e);
-                    setSeletcedBook(book.id);
-                  }}
-                  type="button"
-                  className=" hover:underline mr-2"
-                >
-                  <IconDots />
-                </button>
-              </td>
+      <div className="w-full overflow-x-auto">
+        <table className="w-full border-collapse text-[12px]">
+          <thead>
+            <tr className="bg-gray-200 text-gray-700 uppercase leading-normal">
+              <th className="py-2 px-4 text-left">Cover</th>
+              <th className="py-2 px-4 text-left">Title</th>
+              <th className="py-2 px-4 text-left">Author</th>
+              <th className="py-2 px-4 text-center">Category</th>
+              <th className="py-2 px-4 text-center">Price</th>
+              <th className="py-2 px-4 text-center">Stock</th>
+              <th className="py-2 px-4 text-center">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody className="text-gray-700">
+            {currentBooks.map((book) => (
+              <tr
+                key={book.id}
+                className="border-b border-gray-200 hover:bg-gray-50"
+              >
+                <td className="py-2 px-4">
+                  <Image
+                    src={book.imageUrl}
+                    alt="Book image"
+                    className="w-10 h-14 rounded-md object-cover"
+                    width={10}
+                    height={14}
+                  />
+                </td>
+                <td className="py-2 px-4 truncate max-w-40">{book.title}</td>
+                <td className="py-2 px-4 whitespace-nowrap">{book.author}</td>
+                <td className="py-2 px-4 text-center">
+                  <span className="bg-blue-100 text-blue-600 px-2 py-1 rounded text-[11px]">
+                    {book.category}
+                  </span>
+                </td>
+                <td className="py-2 px-4 text-center">${book.price}</td>
+                <td className="py-2 px-4 text-center">{book.inStock}</td>
+                <td className="py-2 px-4 text-center">
+                  <button
+                    onClick={(e) => {
+                      openModal(e);
+                      setSeletcedBook(book.id);
+                    }}
+                    type="button"
+                    className="hover:underline"
+                  >
+                    <IconDots />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {/* Pagination */}
+        <div className="flex justify-between items-center mt-4 p-3 text-sm">
+          <button
+            onClick={prevPage}
+            disabled={currentPage === 1}
+            className={`px-4 py-1 border rounded ${
+              currentPage === 1
+                ? "text-gray-400 cursor-not-allowed"
+                : "hover:bg-gray-200"
+            }`}
+          >
+            Previous
+          </button>
+          <span className="text-gray-700 font-medium">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={nextPage}
+            disabled={currentPage === totalPages}
+            className={`px-4 py-1 border rounded ${
+              currentPage === totalPages
+                ? "text-gray-400 cursor-not-allowed"
+                : "hover:bg-gray-200"
+            }`}
+          >
+            Next
+          </button>
+        </div>
+      </div>
+
       {modalOpen && (
         <OptionsModal
           modalRef={modalRef}
