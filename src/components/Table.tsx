@@ -129,9 +129,7 @@ const Table = () => {
         />
       )}
 
-      {editMidalOpen && (
-        <EditBookModal book={Books[0]} onClose={setEditModalOpen} />
-      )}
+      {editMidalOpen && <EditBookModal onClose={setEditModalOpen} />}
     </>
   );
 };

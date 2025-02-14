@@ -1,7 +1,8 @@
 import { IconX } from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { RefObject } from "react";
+import React, { RefObject, useState } from "react";
+import DeleteConfirmationModal from "./DeleteConfirmationModal"; // Import the new confirmation modal
 
 const OptionsModal = ({
   modalRef,
@@ -16,12 +17,18 @@ const OptionsModal = ({
   selectedBook: number | null;
   setEditModalOpen: (state: boolean) => void;
 }) => {
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false); // Manage state for delete confirmation
   const router = useRouter();
 
   const handleEdit = () => {
     setModalOpen(false);
     setEditModalOpen(true);
     router.push(`/books?edit=${selectedBook}`);
+  };
+
+  const handleDelete = () => {
+    setDeleteModalOpen(true); // Open the delete confirmation modal
+    setModalOpen(false); // Close the options modal
   };
 
   return (
@@ -42,7 +49,7 @@ const OptionsModal = ({
       <ul className="space-y-3">
         <li>
           <Link
-            href={`/dashboard/${selectedBook}`}
+            href={`/books/${selectedBook}`}
             className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md"
           >
             📖 View Details
@@ -57,11 +64,22 @@ const OptionsModal = ({
           </button>
         </li>
         <li>
-          <button className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-100 rounded-md">
+          <button
+            onClick={handleDelete}
+            className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-100 rounded-md"
+          >
             🗑️ Delete
           </button>
         </li>
       </ul>
+
+      {/* Delete Confirmation Modal */}
+      {isDeleteModalOpen && (
+        <DeleteConfirmationModal
+          selectedBook={selectedBook}
+          setDeleteModalOpen={setDeleteModalOpen}
+        />
+      )}
     </div>
   );
 };
