@@ -4,7 +4,7 @@ import Table from "./Table";
 
 const BookListTable = () => {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 ">
       <div className="flex flex-row justify-between border-b-2 p-2">
         <h1 className="font-bold text-2xl">📚 Book List</h1>
         <input
@@ -22,7 +22,7 @@ const BookListTable = () => {
       </div>
       {/* <div className="flex flex-row justify-end p-2"></div> */}
 
-      <div className="container mx-auto">
+      <div className="container mx-auto relative">
         <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
           <Table />
         </div>
