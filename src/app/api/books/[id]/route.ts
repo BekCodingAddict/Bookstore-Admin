@@ -23,10 +23,10 @@ export async function GET(
 }
 
 //PUT
-export const PUT = async (
+export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
-) => {
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const { id } = await params;
     await connectDB();
@@ -50,13 +50,13 @@ export const PUT = async (
       status: 500,
     });
   }
-};
+}
 
 // DELETE
-export const DELETE = async (
+export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
-) => {
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const { id } = await params;
     await connectDB();
@@ -77,4 +77,4 @@ export const DELETE = async (
       status: 500,
     });
   }
-};
+}
