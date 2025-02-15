@@ -9,7 +9,11 @@ export const metadata: Metadata = {
   description: "Manage your bookstore easily",
 };
 
-const BookDetailsPage = async ({ params }: { params: { bookId: string } }) => {
+const BookDetailsPage = async ({
+  params,
+}: {
+  params: Promise<{ bookId: string }>;
+}) => {
   const { bookId } = await params;
 
   if (!bookId) {
