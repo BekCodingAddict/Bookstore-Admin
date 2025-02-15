@@ -1,15 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import Image from "@node_modules/next/image";
-import { Book } from "@src/types/book";
-import DeleteConfirmationModal from "./DeleteConfirmationModal";
-import EditBookModal from "./EditBookModal";
-import { useRouter } from "next/navigation";
 import {
   IconEdit,
   IconTrashX,
 } from "@node_modules/@tabler/icons-react/dist/esm/tabler-icons-react";
+import { Book } from "@src/types/book";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import EditBookModal from "./EditBookModal";
 
 const BookDetails = ({ book, bookId }: { book: Book; bookId: string }) => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
