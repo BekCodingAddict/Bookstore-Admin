@@ -1,21 +1,53 @@
 import Book from "@models/Book";
+import { Op } from "sequelize";
 import { connectDB } from "@utils/connectToDb";
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async () => {
+export const GET = async (req: NextRequest) => {
   try {
-    await connectDB();
-    const books = await Book.findAll();
+    const search = req.nextUrl.searchParams.get("search");
 
-    if (!books) {
-      return new NextResponse("Books not found!", { status: 404 });
+    if (!search) {
+      await connectDB();
+      const books = await Book.findAll();
+
+      if (!books || books.length === 0) {
+        return new NextResponse(
+          JSON.stringify({ message: "Books not found!" }),
+          { status: 404, headers: { "Content-Type": "application/json" } }
+        );
+      }
+      return NextResponse.json(books, { status: 200 });
     }
 
-    return NextResponse.json(books, { status: 200 });
-  } catch (error) {
-    return new NextResponse(`Failed to fetch book! Error: ${error}`, {
-      status: 500,
+    await connectDB();
+    const searchedBooks = await Book.findAll({
+      where: {
+        [Op.or]: [
+          { author: { [Op.like]: `%${search}%` } },
+          { title: { [Op.like]: `%${search}%` } },
+        ],
+      },
     });
+
+    if (!searchedBooks || searchedBooks.length === 0) {
+      return new NextResponse(
+        JSON.stringify({ books: [], message: "Books not found!" }),
+        {
+          status: 404,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    return NextResponse.json(searchedBooks, { status: 200 });
+  } catch (error) {
+    return new NextResponse(
+      JSON.stringify({
+        message: `Failed to fetch books! Error: ${error}`,
+      }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
   }
 };
 
