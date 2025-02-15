@@ -1,56 +1,61 @@
-"use client";
+import React, { useState, useRef, useEffect } from "react";
 import { IconDots } from "@tabler/icons-react";
 import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
 import OptionsModal from "./OptionsModal";
 import EditBookModal from "./EditBookModal";
+import { Book } from "@src/types/book";
+import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import { useRouter } from "next/navigation";
 
-export const Books = [
-  {
-    id: 1,
-    title: "Atomic Habits",
-    image:
-      "https://images-us.bookshop.org/ingram/9780735211292.jpg?width=384&v=v2",
-    author: "James Clear",
-    price: 22,
-    category: ["habits", "motivation", "self-improve"],
-    inStock: 12,
-    description:
-      "Thoughtful and easy to understand, James Clear’s Atomic Habits is a must for anyone trying to change their productivity. This simple guide will help create a strong foundation for building good habits and make it easy to say goodbye to bad habits for good.",
-  },
-  {
-    id: 2,
-    title: "Atomic Habits",
-    image:
-      "https://images-us.bookshop.org/ingram/9780735211292.jpg?width=384&v=v2",
-    author: "James Clear",
-    price: 22,
-    category: ["habits", "motivation", "self-improve"],
-    inStock: 12,
-    description:
-      "Thoughtful and easy to understand, James Clear’s Atomic Habits is a must for anyone trying to change their productivity. This simple guide will help create a strong foundation for building good habits and make it easy to say goodbye to bad habits for good.",
-  },
-];
+const itemsPerPage = 10;
 
-const Table = () => {
+const Table = ({ books }: { books: Book[] }) => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [editMidalOpen, setEditModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
   const [modalPosition, setModalPosition] = useState({ top: 0 });
   const modalRef = useRef<HTMLDivElement | null>(null);
-  const [selectedBook, setSeletcedBook] = useState<number | null>(null);
+  const [selectedBook, setSelectedBook] = useState<number>(0);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+  const router = useRouter();
+
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil(books.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+  // Slice the books based on current page
+  const currentBooks =
+    Array.isArray(books) && books.length > 0
+      ? books.slice(indexOfFirstItem, indexOfLastItem)
+      : [];
+
+  const nextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
 
   const openModal = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-
-    setModalPosition({
-      top: event.clientY,
-    });
+    setModalPosition({ top: event.clientY });
     setModalOpen(true);
   };
 
+  const handleDelete = () => {
+    setModalOpen(false);
+    setDeleteModalOpen(true);
+    router.push(`/books?delete=${selectedBook}`);
+  };
+
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
+    const handleClickOutside = (event: Event) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
         setModalOpen(false);
       }
     };
@@ -66,59 +71,102 @@ const Table = () => {
 
   return (
     <>
-      <table className="w-full border-collapse">
-        <thead>
-          <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-            <th className="py-3 px-6 text-left">Cover</th>
-            <th className="py-3 px-6 text-left">Title</th>
-            <th className="py-3 px-6 text-left">Author</th>
-            <th className="py-3 px-6 text-center">Category</th>
-            <th className="py-3 px-6 text-center">Price</th>
-            <th className="py-3 px-6 text-center">Stock</th>
-            <th className="py-3 px-6 text-center">Actions</th>
-          </tr>
-        </thead>
-
-        <tbody className="text-gray-700 text-sm ">
-          {Books.map((book) => (
-            <tr
-              key={book.id}
-              className="border-b border-gray-200 hover:bg-gray-100"
-            >
-              <td className="py-3 px-6">
-                <Image
-                  src="https://images-us.bookshop.org/ingram/9780735211292.jpg?width=384&v=v2"
-                  alt="Atomic Habits"
-                  className="w-14 h-20 rounded-md object-cover"
-                  width={40} // Correct (number)
-                  height={40}
-                />
-              </td>
-              <td className="py-3 px-6">Atomic Habits</td>
-              <td className="py-3 px-6">James Clear</td>
-              <td className="py-3 px-6 text-center">
-                <span className="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs">
-                  Self-Improve
-                </span>
-              </td>
-              <td className="py-3 px-6 text-center">$22</td>
-              <td className="py-3 px-6 text-center">12</td>
-              <td className="py-3 px-6 text-center">
-                <button
-                  onClick={(e) => {
-                    openModal(e);
-                    setSeletcedBook(book.id);
-                  }}
-                  type="button"
-                  className=" hover:underline mr-2"
-                >
-                  <IconDots />
-                </button>
-              </td>
+      <div className="w-full overflow-x-auto">
+        <table className="w-full border-collapse text-[12px]">
+          <thead>
+            <tr className="bg-gray-200 text-gray-700 uppercase leading-normal">
+              <th className="py-2 px-4 text-left">Cover</th>
+              <th className="py-2 px-4 text-left">Title</th>
+              <th className="py-2 px-4 text-left">Author</th>
+              <th className="py-2 px-4 text-center">Category</th>
+              <th className="py-2 px-4 text-center">Price</th>
+              <th className="py-2 px-4 text-center">Stock</th>
+              <th className="py-2 px-4 text-center">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody className="text-gray-700">
+            {currentBooks.length > 0 ? (
+              currentBooks.map((book) => (
+                <tr
+                  key={book.id}
+                  className="border-b border-gray-200 hover:bg-gray-50"
+                >
+                  <td className="py-2 px-4">
+                    <Image
+                      src={book.imageUrl}
+                      alt="Book image"
+                      className="w-10 h-14 rounded-md object-cover"
+                      width={10}
+                      height={14}
+                    />
+                  </td>
+                  <td className="py-2 px-4 truncate max-w-40">{book.title}</td>
+                  <td className="py-2 px-4 whitespace-nowrap">{book.author}</td>
+                  <td className="py-2 px-4 text-center">
+                    <span className="bg-blue-100 text-blue-600 px-2 py-1 rounded text-[11px]">
+                      {book.category}
+                    </span>
+                  </td>
+                  <td className="py-2 px-4 text-center">${book.price}</td>
+                  <td className="py-2 px-4 text-center">{book.inStock}</td>
+                  <td className="py-2 px-4 text-center">
+                    <button
+                      onClick={(e) => {
+                        openModal(e);
+                        setSelectedBook(book.id);
+                      }}
+                      type="button"
+                      className="hover:underline"
+                    >
+                      <IconDots />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td
+                  colSpan={7}
+                  className="py-4 text-center text-gray-500 text-xl"
+                >
+                  🙅‍♂️ No books found
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+
+        {/* Pagination */}
+        <div className="flex justify-between items-center mt-4 p-3 text-sm">
+          <button
+            onClick={prevPage}
+            disabled={currentPage === 1}
+            className={`px-4 py-1 border rounded ${
+              currentPage === 1
+                ? "text-gray-400 cursor-not-allowed"
+                : "hover:bg-gray-200"
+            }`}
+          >
+            Previous
+          </button>
+          <span className="text-gray-700 font-medium">
+            Page {currentPage} of {totalPages || 0}
+          </span>
+          <button
+            onClick={nextPage}
+            disabled={currentPage === totalPages}
+            className={`px-4 py-1 border rounded ${
+              currentPage === totalPages
+                ? "text-gray-400 cursor-not-allowed"
+                : "hover:bg-gray-200"
+            }`}
+          >
+            Next
+          </button>
+        </div>
+      </div>
+
       {modalOpen && (
         <OptionsModal
           modalRef={modalRef}
@@ -126,10 +174,19 @@ const Table = () => {
           setModalOpen={setModalOpen}
           selectedBook={selectedBook}
           setEditModalOpen={setEditModalOpen}
+          handleDelete={handleDelete}
         />
       )}
 
-      {editMidalOpen && <EditBookModal onClose={setEditModalOpen} />}
+      {/* Delete Confirmation Modal */}
+      {isDeleteModalOpen && (
+        <DeleteConfirmationModal
+          selectedBook={selectedBook}
+          setDeleteModalOpen={setDeleteModalOpen}
+        />
+      )}
+
+      {editModalOpen && <EditBookModal onClose={setEditModalOpen} />}
     </>
   );
 };

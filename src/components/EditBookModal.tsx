@@ -1,7 +1,7 @@
 "use client";
+
 import { useRouter, useSearchParams } from "next/navigation";
-import { useRef, useState } from "react";
-import { Books } from "./Table";
+import { useEffect, useRef, useState } from "react";
 
 export default function EditBookModal({
   onClose,
@@ -10,23 +10,80 @@ export default function EditBookModal({
 }) {
   const searchParams = useSearchParams();
   const bookId = searchParams.get("edit");
-
-  const book = bookId ? Books.find((book) => book.id === Number(bookId)) : null;
-  console.log(book);
-  const [formData, setFormData] = useState({
-    title: book ? book.title : "",
-    author: book ? book.author : "",
-    price: book ? book.price : "",
-    category: book ? book.category.join(", ") : "",
-    inStock: book ? book.inStock : "",
-  });
-
-  const ref = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
+  const ref = useRef<HTMLDivElement | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const initialFormData = {
+    title: "",
+    author: "",
+    price: "",
+    category: "",
+    inStock: "",
+    imageUrl: "",
+    description: "",
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
+
+  useEffect(() => {
+    const fetchBook = async (id: string) => {
+      try {
+        const response = await fetch(`/api/books/${id}`);
+        if (!response.ok) {
+          console.log("Book not found");
+          return;
+        }
+        const bookData = await response.json();
+        setFormData({
+          title: bookData.title || "",
+          author: bookData.author || "",
+          price: bookData.price || "",
+          category: bookData.category || "",
+          inStock: bookData.inStock || "",
+          imageUrl: bookData.imageUrl || "",
+          description: bookData.description || "",
+        });
+      } catch (error) {
+        console.log("Failed to fetch a book! Error:", error);
+      }
+    };
+
+    if (bookId) {
+      fetchBook(String(bookId));
+    } else {
+      setFormData(initialFormData);
+    }
+  }, [bookId]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`/api/books${bookId ? "/" + bookId : ""}`, {
+        method: bookId ? "PUT" : "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        router.push("/books");
+        location.href = "/books";
+
+        if (onClose) onClose(false);
+      } else {
+        throw new Error("Failed to submit book data!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -34,79 +91,59 @@ export default function EditBookModal({
       ref={ref}
       className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md flex justify-center items-center p-4"
     >
-      <div className="bg-white w-full max-w-lg rounded-lg shadow-lg p-6">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white w-full max-w-lg rounded-lg shadow-lg p-6"
+      >
         <h2 className="text-xl font-bold text-gray-800 mb-4">
           {bookId ? "✏️ Edit Book" : "➕ Add New Book"}
         </h2>
 
-        {/* Form Inputs */}
         <div className="space-y-4">
-          <div className="flex gap-2 flex-col">
-            <label htmlFor="title">Book Title</label>
-            <input
-              type="text"
-              name="title"
-              id="title"
-              value={formData.title}
-              onChange={handleChange}
-              className="w-full px-2 py-2 border rounded"
-              placeholder="Book Title"
-            />
-          </div>
-
-          <div className="flex gap-2 flex-col">
-            <label htmlFor="author">Author</label>
-            <input
-              type="text"
-              name="author"
-              id="author"
-              value={formData.author}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded"
-              placeholder="Author"
-            />
-          </div>
-          <div className="flex gap-2 flex-col">
-            <label htmlFor="price">Price</label>
-            <input
-              type="number"
-              name="price"
-              id="price"
-              value={formData.price}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded"
-              placeholder="Price"
-            />
-          </div>
-          <div className="flex gap-2 flex-col">
-            <label htmlFor="category">Category</label>
-            <input
-              type="text"
-              name="category"
-              id="category"
-              value={formData.category}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded"
-              placeholder="Categories (comma separated)"
-            />
-          </div>
-          <div className="flex gap-2 flex-col">
-            <label htmlFor="inStock">Quantity</label>
-            <input
-              type="number"
-              name="inStock"
-              id="inStock"
-              value={formData.inStock}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded"
-              placeholder="Stock Quantity"
-            />
-          </div>
+          {[
+            "title",
+            "author",
+            "price",
+            "category",
+            "inStock",
+            "imageUrl",
+            "description",
+          ].map((field) => (
+            <div key={field} className="flex gap-2 flex-col">
+              <label htmlFor={field}>
+                {field.charAt(0).toUpperCase() + field.slice(1)}
+              </label>
+              {field === "description" ? (
+                <textarea
+                  rows={4}
+                  name={field}
+                  id={field}
+                  value={formData[field as keyof typeof formData]}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border rounded"
+                  placeholder={`Enter ${field}`}
+                  style={{ resize: "none" }}
+                />
+              ) : (
+                <input
+                  type={
+                    field === "price" || field === "inStock" ? "number" : "text"
+                  }
+                  name={field}
+                  id={field}
+                  value={formData[field as keyof typeof formData]}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border rounded"
+                  placeholder={`Enter ${field}`}
+                />
+              )}
+            </div>
+          ))}
         </div>
 
-        {/* Buttons */}
         <div className="mt-6 flex justify-end gap-4">
           <button
+            type="button"
             className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
             onClick={() => {
               if (onClose) onClose(false);
@@ -122,7 +159,7 @@ export default function EditBookModal({
             💾 {bookId ? "Save Changes" : "Add New Book"}
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
