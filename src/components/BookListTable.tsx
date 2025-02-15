@@ -3,6 +3,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Table from "./Table";
 import EditBookModal from "./EditBookModal";
+import {
+  IconBooks,
+  IconPlus,
+} from "@node_modules/@tabler/icons-react/dist/esm/tabler-icons-react";
 
 const BookListTable = () => {
   const router = useRouter();
@@ -51,9 +55,11 @@ const BookListTable = () => {
   return (
     <div className="flex flex-col gap-2 ">
       <div className="flex flex-row justify-between border-b-2 p-2">
-        <h1 className="font-bold text-2xl">📚 Book List</h1>
+        <h1 className="font-bold text-2xl flex flex-row gap-2 text-stone-700">
+          <IconBooks size={35} /> <span>Book List</span>
+        </h1>
         <input
-          className="w-[60%] rounded-md hover:outline-2 outline-[1px] outline-black hover:outline-black focus:outline-1 focus:outline-black py-2 px-4"
+          className="mt-1 w-[60%] rounded-md border px-3 py-2 text-gray-700 shadow-sm focus:border-blue-500 focus:outline-none"
           type="text"
           placeholder="Search book..."
           value={searchTerm}
@@ -63,9 +69,10 @@ const BookListTable = () => {
           onClick={() => {
             router.push("/books?adding-new-book=true");
           }}
-          className="flex items-center font-semibold flex-row border-[1px] gap-1 p-2 bg-black text-white rounded-md text-sm hover:bg-white hover:text-black hover:border-slate-950 hover:border-[1px]"
+          className="flex items-center font-semibold flex-row border-[1px] gap-2 p-2  bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700 "
           aria-label="Add New Book"
         >
+          <IconPlus />
           <span>Add New Book</span>
         </button>
       </div>

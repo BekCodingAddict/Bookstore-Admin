@@ -1,5 +1,12 @@
+import { Metadata } from "@node_modules/next";
 import Navbar from "@src/components/Navbar";
 import Sidebar from "@src/components/Sidebar";
+
+// Metadata
+export const metadata: Metadata = {
+  title: "Bookstore Admin",
+  description: "Manage your bookstore easily",
+};
 
 const DashboardLayout = ({
   children,

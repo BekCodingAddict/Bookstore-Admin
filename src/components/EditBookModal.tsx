@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  IconCancel,
+  IconDeviceFloppy,
+  IconEdit,
+  IconPlus,
+} from "@node_modules/@tabler/icons-react/dist/esm/tabler-icons-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
@@ -95,8 +101,16 @@ export default function EditBookModal({
         onSubmit={handleSubmit}
         className="bg-white w-full max-w-lg rounded-lg shadow-lg p-6"
       >
-        <h2 className="text-xl font-bold text-gray-800 mb-4">
-          {bookId ? "✏️ Edit Book" : "➕ Add New Book"}
+        <h2 className="text-xl font-bold text-gray-800 mb-4 flex flex-row gap-2 ">
+          {bookId ? (
+            <>
+              <IconEdit /> <span>Edit Book</span>
+            </>
+          ) : (
+            <>
+              <IconPlus /> <span>Add New Book</span>
+            </>
+          )}
         </h2>
 
         <div className="space-y-4">
@@ -144,7 +158,7 @@ export default function EditBookModal({
         <div className="mt-6 flex justify-end gap-4">
           <button
             type="button"
-            className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+            className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 flex flex-row gap-2"
             onClick={() => {
               if (onClose) onClose(false);
               router.back();
@@ -153,10 +167,11 @@ export default function EditBookModal({
               }
             }}
           >
-            ❌ Cancel
+            <IconCancel /> <span>Cancel</span>
           </button>
-          <button className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
-            💾 {bookId ? "Save Changes" : "Add New Book"}
+          <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 flex flex-row gap-2">
+            <IconDeviceFloppy />
+            {bookId ? "Save Changes" : "Add New Book"}
           </button>
         </div>
       </form>

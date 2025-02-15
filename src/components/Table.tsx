@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
-import { IconDots } from "@tabler/icons-react";
-import Image from "next/image";
-import OptionsModal from "./OptionsModal";
-import EditBookModal from "./EditBookModal";
 import { Book } from "@src/types/book";
-import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import { IconCancel, IconDots } from "@tabler/icons-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
+import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import EditBookModal from "./EditBookModal";
+import OptionsModal from "./OptionsModal";
 
 const itemsPerPage = 10;
 
@@ -72,7 +72,7 @@ const Table = ({ books }: { books: Book[] }) => {
   return (
     <>
       <div className="w-full overflow-x-auto">
-        <table className="w-full border-collapse text-[12px]">
+        <table className="w-full border-collapse text-[12px] ">
           <thead>
             <tr className="bg-gray-200 text-gray-700 uppercase leading-normal">
               <th className="py-2 px-4 text-left">Cover</th>
@@ -85,7 +85,7 @@ const Table = ({ books }: { books: Book[] }) => {
             </tr>
           </thead>
 
-          <tbody className="text-gray-700">
+          <tbody className={`text-gray-700`}>
             {currentBooks.length > 0 ? (
               currentBooks.map((book) => (
                 <tr
@@ -93,13 +93,21 @@ const Table = ({ books }: { books: Book[] }) => {
                   className="border-b border-gray-200 hover:bg-gray-50"
                 >
                   <td className="py-2 px-4">
-                    <Image
+                    <img
+                      src={book.imageUrl}
+                      alt="Book image"
+                      className="w-10 h-14 rounded-md object-cover hover:w-[10rem] hover:h-[16rem] hover:absolute hover:shadow-2xl hover:shadow-stone-700"
+                      width={10}
+                      height={14}
+                      loading="lazy"
+                    />
+                    {/* <Image
                       src={book.imageUrl}
                       alt="Book image"
                       className="w-10 h-14 rounded-md object-cover"
                       width={10}
                       height={14}
-                    />
+                    /> */}
                   </td>
                   <td className="py-2 px-4 truncate max-w-40">{book.title}</td>
                   <td className="py-2 px-4 whitespace-nowrap">{book.author}</td>
@@ -125,14 +133,19 @@ const Table = ({ books }: { books: Book[] }) => {
                 </tr>
               ))
             ) : (
-              <tr>
-                <td
-                  colSpan={7}
-                  className="py-4 text-center text-gray-500 text-xl"
-                >
-                  🙅‍♂️ No books found
-                </td>
-              </tr>
+              <>
+                <tr className="relative">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td
+                    colSpan={7}
+                    className="py-4 text-center text-gray-500 text-xl flex justify-center items-center  "
+                  >
+                    <IconCancel /> <span>No books found</span>
+                  </td>
+                </tr>
+              </>
             )}
           </tbody>
         </table>

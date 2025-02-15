@@ -1,6 +1,13 @@
+import { Metadata } from "@node_modules/next";
 import { redirect } from "@node_modules/next/navigation";
 import BookDetails from "@src/components/BookDetails";
 import { getBookById } from "@src/utils/services";
+
+// Metadata
+export const metadata: Metadata = {
+  title: "Book Details",
+  description: "Manage your bookstore easily",
+};
 
 const BookDetailsPage = async ({ params }: { params: { bookId: string } }) => {
   const { bookId } = await params;
