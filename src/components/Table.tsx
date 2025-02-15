@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
-import { IconDots } from "@tabler/icons-react";
+import { IconCancel, IconDots } from "@tabler/icons-react";
 import Image from "next/image";
 import OptionsModal from "./OptionsModal";
 import EditBookModal from "./EditBookModal";
 import { Book } from "@src/types/book";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import { useRouter } from "next/navigation";
+import BookDetails from "./BookDetails";
 
 const itemsPerPage = 10;
 
@@ -85,7 +86,7 @@ const Table = ({ books }: { books: Book[] }) => {
             </tr>
           </thead>
 
-          <tbody className="text-gray-700">
+          <tbody className={`text-gray-700 `}>
             {currentBooks.length > 0 ? (
               currentBooks.map((book) => (
                 <tr
@@ -125,12 +126,12 @@ const Table = ({ books }: { books: Book[] }) => {
                 </tr>
               ))
             ) : (
-              <tr>
+              <tr className="">
                 <td
                   colSpan={7}
-                  className="py-4 text-center text-gray-500 text-xl"
+                  className="py-4 text-center text-gray-500 text-xl flex justify-center items-center"
                 >
-                  🙅‍♂️ No books found
+                  <IconCancel /> <span>No books found</span>
                 </td>
               </tr>
             )}

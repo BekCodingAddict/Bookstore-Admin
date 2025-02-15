@@ -6,6 +6,10 @@ import { Book } from "@src/types/book";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import EditBookModal from "./EditBookModal";
 import { useRouter } from "next/navigation";
+import {
+  IconEdit,
+  IconTrashX,
+} from "@node_modules/@tabler/icons-react/dist/esm/tabler-icons-react";
 
 const BookDetails = ({ book, bookId }: { book: Book; bookId: string }) => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -27,7 +31,7 @@ const BookDetails = ({ book, bookId }: { book: Book; bookId: string }) => {
       </div>
 
       <div className="md:w-2/3 md:ml-6 mt-6 md:mt-0">
-        <h1 className="text-2xl font-bold text-gray-800">{book.title}</h1>
+        <h1 className="text-2xl font-bold text-stone-700">{book.title}</h1>
         <p className="text-gray-600 mt-1">
           by <span className="font-semibold">{book.author}</span>
         </p>
@@ -41,9 +45,9 @@ const BookDetails = ({ book, bookId }: { book: Book; bookId: string }) => {
         <p className="text-gray-700 mt-4">{book.description}</p>
 
         <div className="mt-4">
-          <p className="text-xl font-semibold text-gray-900">${book.price}</p>
+          <p className="text-xl font-semibold text-stone-700">${book.price}</p>
           <p
-            className={`text-sm ${
+            className={`text-sm font-semibold ${
               book.inStock > 0 ? "text-green-600" : "text-red-600"
             }`}
           >
@@ -59,15 +63,16 @@ const BookDetails = ({ book, bookId }: { book: Book; bookId: string }) => {
               setEditModalOpen(true);
               router.push(`/books/${bookId}?edit=${bookId}`);
             }}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+            className="flex flex-row gap-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 focus:outline-none transition-all duration-300 transform hover:scale-105 active:scale-95"
           >
-            ✏️ Edit
+            <IconEdit />
+            <span> Edit</span>
           </button>
           <button
             onClick={() => setDeleteModalOpen(true)}
-            className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
+            className=" flex flex-row gap-2 bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-lg shadow-md hover:from-red-600 hover:to-red-700 focus:outline-none transition-all duration-300 transform hover:scale-105 active:scale-95"
           >
-            🗑️ Delete
+            <IconTrashX /> <span>Delete</span>
           </button>
         </div>
       </div>

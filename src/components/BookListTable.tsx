@@ -3,7 +3,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Table from "./Table";
 import EditBookModal from "./EditBookModal";
-import { IconPlus } from "@node_modules/@tabler/icons-react/dist/esm/tabler-icons-react";
+import {
+  IconBooks,
+  IconPlus,
+} from "@node_modules/@tabler/icons-react/dist/esm/tabler-icons-react";
 
 const BookListTable = () => {
   const router = useRouter();
@@ -52,7 +55,9 @@ const BookListTable = () => {
   return (
     <div className="flex flex-col gap-2 ">
       <div className="flex flex-row justify-between border-b-2 p-2">
-        <h1 className="font-bold text-2xl">📚 Book List</h1>
+        <h1 className="font-bold text-2xl flex flex-row gap-2 text-stone-700">
+          <IconBooks size={35} /> <span>Book List</span>
+        </h1>
         <input
           className="mt-1 w-[60%] rounded-md border px-3 py-2 text-gray-700 shadow-sm focus:border-blue-500 focus:outline-none"
           type="text"
