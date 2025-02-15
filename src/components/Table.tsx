@@ -1,6 +1,5 @@
 import { Book } from "@src/types/book";
 import { IconCancel, IconDots } from "@tabler/icons-react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";

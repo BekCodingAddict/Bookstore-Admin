@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
@@ -28,8 +28,13 @@ export default function LoginPage() {
     resolver: zodResolver(loginSchema),
   });
 
+  interface LoginFormInputs {
+    email: string;
+    password: string;
+  }
+
   // Handle login
-  const onSubmit = async (data: any) => {
+  const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
     setError(null);
     try {
       if (
