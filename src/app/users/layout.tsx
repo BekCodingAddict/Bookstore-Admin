@@ -4,11 +4,11 @@ import Sidebar from "@src/components/Sidebar";
 
 // Metadata
 export const metadata: Metadata = {
-  title: "Books",
+  title: "Users",
   description: "Manage your bookstore easily",
 };
 
-const BooksLayout = ({
+const UsersLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -26,4 +26,4 @@ const BooksLayout = ({
   );
 };
 
-export default BooksLayout;
+export default UsersLayout;
