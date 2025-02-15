@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["images-us.bookshop.org", "shop.mtwyouth.org"],
+    domains: ["images-us.bookshop.org", "shop.mtwyouth.org", "t4.ftcdn.net"],
   },
   webpack: (config, { isServer }) => {
     if (isServer) {
