@@ -20,13 +20,21 @@ const BookDetails = ({ book, bookId }: { book: Book; bookId: string }) => {
     <div className="max-w-6xl mx-auto px-4 py-8  rounded-lg p-6 md:flex">
       <div className="md:w-1/3">
         {book && (
-          <Image
+          <img
             src={book.imageUrl}
             alt={book.title}
             width={250}
             height={350}
             className="rounded-lg shadow-md"
+            loading="lazy"
           />
+          //   <Image
+          //     src={book.imageUrl}
+          //     alt={book.title}
+          //     width={250}
+          //     height={350}
+          //     className="rounded-lg shadow-md"
+          //   />
         )}
       </div>
 

@@ -11,7 +11,7 @@ const outfit = Outfit({
 
 // Metadata
 export const metadata: Metadata = {
-  title: "📚 Bookstore Admin",
+  title: "Login",
   description: "Manage your bookstore easily",
 };
 

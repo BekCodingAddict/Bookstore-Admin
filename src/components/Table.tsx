@@ -1,12 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
+import { Book } from "@src/types/book";
 import { IconCancel, IconDots } from "@tabler/icons-react";
 import Image from "next/image";
-import OptionsModal from "./OptionsModal";
-import EditBookModal from "./EditBookModal";
-import { Book } from "@src/types/book";
-import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import { useRouter } from "next/navigation";
-import BookDetails from "./BookDetails";
+import React, { useEffect, useRef, useState } from "react";
+import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import EditBookModal from "./EditBookModal";
+import OptionsModal from "./OptionsModal";
 
 const itemsPerPage = 10;
 
@@ -94,13 +93,21 @@ const Table = ({ books }: { books: Book[] }) => {
                   className="border-b border-gray-200 hover:bg-gray-50"
                 >
                   <td className="py-2 px-4">
-                    <Image
+                    <img
                       src={book.imageUrl}
                       alt="Book image"
                       className="w-10 h-14 rounded-md object-cover"
                       width={10}
                       height={14}
+                      loading="lazy"
                     />
+                    {/* <Image
+                      src={book.imageUrl}
+                      alt="Book image"
+                      className="w-10 h-14 rounded-md object-cover"
+                      width={10}
+                      height={14}
+                    /> */}
                   </td>
                   <td className="py-2 px-4 truncate max-w-40">{book.title}</td>
                   <td className="py-2 px-4 whitespace-nowrap">{book.author}</td>
