@@ -18,7 +18,6 @@ const BookListTable = () => {
     const data = await response.json();
     setBooks(data);
   };
-  console.log(books);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;

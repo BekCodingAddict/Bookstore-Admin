@@ -24,10 +24,8 @@ const DeleteConfirmationModal = ({
         throw new Error("Failed to delete book!");
       }
 
-      // const data = await response.json();
-
       console.log("Book deleted successfully!");
-      setDeleteModalOpen(false);
+      if (setDeleteModalOpen) setDeleteModalOpen(false);
       setIsDeleting(false);
 
       router.push("/books");
