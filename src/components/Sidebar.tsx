@@ -1,6 +1,5 @@
 "use client";
 import {
-  IconBook,
   IconBooks,
   IconCheckupList,
   IconChevronsLeft,
@@ -9,9 +8,9 @@ import {
   IconUsers,
 } from "@tabler/icons-react";
 
+import Image from "next/image";
 import { useState } from "react";
 import { NavLink } from "./NavLink";
-import Image from "next/image";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
