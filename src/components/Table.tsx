@@ -22,7 +22,6 @@ const Table = () => {
   //PAGINATION STATES
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(books.length / itemsPerPage);
-
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentBooks = books.slice(indexOfFirstItem, indexOfLastItem);
