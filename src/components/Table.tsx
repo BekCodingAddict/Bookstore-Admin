@@ -1,7 +1,7 @@
 import { Book } from "@src/types/book";
 import { IconCancel, IconDots } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import EditBookModal from "./EditBookModal";
 import OptionsModal from "./OptionsModal";
@@ -198,7 +198,11 @@ const Table = ({ books }: { books: Book[] }) => {
         />
       )}
 
-      {editModalOpen && <EditBookModal onClose={setEditModalOpen} />}
+      {editModalOpen && (
+        <Suspense fallback={<div>Loading...</div>}>
+          <EditBookModal onClose={setEditModalOpen} />
+        </Suspense>
+      )}
     </>
   );
 };
