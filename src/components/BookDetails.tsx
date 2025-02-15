@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  IconEdit,
-  IconTrashX,
-} from "@node_modules/@tabler/icons-react/dist/esm/tabler-icons-react";
+import { IconEdit, IconTrashX } from "@tabler/icons-react";
 import { Book } from "@src/types/book";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

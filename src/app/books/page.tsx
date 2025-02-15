@@ -1,4 +1,4 @@
-import { Suspense } from "@node_modules/@types/react";
+import { Suspense } from "react";
 import BookListTable from "@src/components/BookListTable";
 
 const Books = () => {

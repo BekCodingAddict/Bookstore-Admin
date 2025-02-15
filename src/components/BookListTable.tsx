@@ -3,10 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Table from "./Table";
 import EditBookModal from "./EditBookModal";
-import {
-  IconBooks,
-  IconPlus,
-} from "@node_modules/@tabler/icons-react/dist/esm/tabler-icons-react";
+import { IconBooks, IconPlus } from "@tabler/icons-react";
 
 const BookListTable = () => {
   const router = useRouter();

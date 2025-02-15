@@ -1,5 +1,5 @@
-import { Metadata } from "@node_modules/next";
-import { redirect } from "@node_modules/next/navigation";
+import { Metadata } from "next";
+import { redirect } from "next/navigation";
 import BookDetails from "@src/components/BookDetails";
 import { getBookById } from "@src/utils/services";
 

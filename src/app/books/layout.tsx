@@ -1,4 +1,4 @@
-import { Metadata } from "@node_modules/next";
+import { Metadata } from "next";
 import Navbar from "@src/components/Navbar";
 import Sidebar from "@src/components/Sidebar";
 

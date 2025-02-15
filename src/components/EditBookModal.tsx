@@ -5,7 +5,7 @@ import {
   IconDeviceFloppy,
   IconEdit,
   IconPlus,
-} from "@node_modules/@tabler/icons-react/dist/esm/tabler-icons-react";
+} from "@tabler/icons-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
