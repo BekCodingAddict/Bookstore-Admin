@@ -3,12 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@utils/connectToDb";
 
 //GET
+
 export async function GET(
   req: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = await context.params;
+    const { id } = await params;
     await connectDB();
     const book = await Book.findByPk(String(id));
     if (!book) return new NextResponse("Book not found!", { status: 404 });
