@@ -1,10 +1,12 @@
 import Book from "@models/Book";
-import { Params } from "@node_modules/next/dist/server/request/params";
-import { NextRequest, NextResponse } from "@node_modules/next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@utils/connectToDb";
 
 //GET
-export const GET = async (req: NextRequest, { params }: { params: Params }) => {
+export const GET = async (
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) => {
   try {
     const { id } = await params;
     await connectDB();
