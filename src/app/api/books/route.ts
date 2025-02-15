@@ -17,7 +17,7 @@ export const GET = async (req: NextRequest) => {
           { status: 404, headers: { "Content-Type": "application/json" } }
         );
       }
-      return NextResponse.json(books, { status: 200 });
+      return new NextResponse(JSON.stringify(books), { status: 200 });
     }
 
     await connectDB();
@@ -40,7 +40,7 @@ export const GET = async (req: NextRequest) => {
       );
     }
 
-    return NextResponse.json(searchedBooks, { status: 200 });
+    return new NextResponse(JSON.stringify(searchedBooks), { status: 200 });
   } catch (error) {
     return new NextResponse(
       JSON.stringify({
@@ -60,15 +60,17 @@ export const POST = async (req: NextRequest) => {
 
     const newBook = await Book.create(bookData);
 
-    return NextResponse.json(
-      { message: "Book created successfully", book: newBook },
+    return new NextResponse(
+      JSON.stringify({ message: "Book created successfully", book: newBook }),
       { status: 201 }
     );
   } catch (error) {
     console.error("Error creating book:", error);
-    return NextResponse.json(
-      { message: "Failed to create book!", error: error },
-      { status: 500 }
+    return new NextResponse(
+      JSON.stringify({
+        message: `Failed to fetch books! Error: ${error}`,
+      }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
 };
