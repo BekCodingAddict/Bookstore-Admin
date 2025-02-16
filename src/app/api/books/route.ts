@@ -35,7 +35,22 @@ export async function GET() {
   try {
     // await connectDB();
 
-    const books = await Book.findAll();
+    const books = [
+      {
+        id: 1,
+        title:
+          "The Subtle Art of Not Giving a F*ck: A Counterintuitive Approach to Living a Good Life ",
+        author: "Roger Wayne",
+        price: 16,
+        category: "motivation",
+        inStock: 66,
+        imageUrl: "https://m.media-amazon.com/images/I/81A5jQHA+lL._SX342_.jpg",
+        description:
+          "In this generation-defining self-help guide, a superstar blogger cuts through the crap to show us how to stop trying to be positive all the time so that we can truly become better, happier people.",
+        createdAt: "2025-02-15T20:17:48.000Z",
+        updatedAt: "2025-02-15T20:17:48.000Z",
+      },
+    ];
 
     return NextResponse.json(books);
   } catch (error) {
