@@ -4,12 +4,12 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const sequelize = new Sequelize(
-  process.env.DATABASE_NAME || "bookstore-admin",
+  process.env.DATABASE_NAME || "railway",
   process.env.DB_USER || "root",
-  process.env.MYSQL_PASSWORD || "",
+  process.env.MYSQL_PASSWORD || "ADLBbkuMJgGHmhZyFGaKzKqrJRpFmmHy",
   {
     dialect: "mysql",
-    host: process.env.DB_HOST || "localhost",
+    host: process.env.DB_HOST || "trolley.proxy.rlwy.net",
     port: Number(process.env.DB_PORT) || 23701,
   }
 );
