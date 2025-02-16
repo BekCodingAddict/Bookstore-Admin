@@ -3,7 +3,7 @@
 > ## 📖 프로젝트 개요
 > 이 프로젝트는 온라인 서점 관리자 대시보드 웹 애플리케이션은 서점의 책 목록을 관리하고, 책의 상세 정보를 확인하거나 수정하며, 각 책의 판매 수량을 모니터링하는 데 사용됩니다. 이 애플리케이션은 서점 운영자가 책을 쉽게 관리하고, 추가, 수정, 삭제할 수 있는 기능을 제공합니다. 프론트엔드는 Next.js, Tailwind CSS, TypeScript를 사용하여 개발되며, 백엔드는 RESTful API로 구현되어 데이터베이스와 통신하여 책 데이터를 저장하고 조회합니다.
 
-- 👉 [LIVE PREVIEW]()
+- 👉 [LIVE PREVIEW](https://bookstore-admin-sigma.vercel.app)
 
 ## 📑 프로젝트 요구사항
 
@@ -127,10 +127,56 @@ npm run dev
  ┣ 📜 README.md
  ┗ 📜 tsconfig.json
 ```
+
+## 참고 사항
+1. 제가 일부로 Next.js Image 성능 최적화 component를 일부로 안 썼습니다.원인 제가 책 상세 정보를 입력할 때 ImageUrl를 같이 입력하게 했습니다.그래서 Next.js Image를 사용하면 제가 원하는 ImageUrl를 입역할 수 없습니다. 매번 다향한 ImageUrㅣ 입력할 때 nextconfig 파일에 domain 추가해야 되기 떄문입니다. 그낭 img 탁를 쓰면 이런 문제 없기 때문입니다. 
+```tsx
+      <div className="md:w-1/3">
+        {book && (
+          <img
+            src={book.imageUrl}
+            alt={book.title}
+            width={250}
+            height={350}
+            className="rounded-lg shadow-md"
+            loading="lazy"
+          />
+          //   <Image
+          //     src={book.imageUrl}
+          //     alt={book.title}
+          //     width={250}
+          //     height={350}
+          //     className="rounded-lg shadow-md"
+          //   />
+        )}
+      </div>
+```
+2. Dashboard 에는 Order,Users,Settings page들을 UI 디자인만 구현해 났습니다. Interactivity가 없습니다!
+3. Dashboard에 로그인 할 떄 까자(FAke)user 정보로 고그인 할 수 있게 구현했습니다. Authentication and Authorization 기능 없습니다.
+4. 배포된 URL에 방문하시면 Database에서 데이터를 가져 오는데 문제가 있는 것 같습니다.아직 해결 못 했습니다. 그런데 Local Envoirment VsCode에 다 잘 실행되고 있습니다.
+   
+
 ## 에러 정리 
 | Error & Problem Title                                                                                                               | Status                                              | Difficult | Date         |
 | ----------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- | --------- | ------------ |
+| [Uncaught (in promise) SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON](https://github.com/BekCodingAddict/Bookstore-Admin/blob/master/errors/Unexpected-token.md)                 | ![solved](https://img.shields.io/badge/pending-yellow) | middle    | Feb 15, 2025 |
+| [ useSearchParams() should be wrapped in a suspense boundary](https://github.com/BekCodingAddict/Bookstore-Admin/blob/master/errors/Wrap-with-Suspense-Boundary.md)  | ![solved](https://img.shields.io/badge/solved-blue) | low       | Feb 15, 2025 |
 | [ Hydration failed](https://github.com/BekCodingAddict/Bookstore-Admin/blob/enhancement/errors/Hydration-failed.md)                 | ![solved](https://img.shields.io/badge/solved-blue) | middle    | Feb 14, 2025 |
 | [ Params should be awaited](https://github.com/BekCodingAddict/Bookstore-Admin/blob/enhancement/errors/Params.should-be-awaited.md) | ![solved](https://img.shields.io/badge/solved-blue) | low       | Feb 14, 2025 |
 | [ div cannot be child of tr](https://github.com/BekCodingAddict/Bookstore-Admin/blob/enhancement/errors/Div-cannot-be-child-tr.md)  | ![solved](https://img.shields.io/badge/solved-blue) | low       | Feb 14, 2025 |
+
+
+## UI Screenshots
+
+![image](https://github.com/user-attachments/assets/58f8ff28-54f4-4253-8555-7ced6e4d4d53)
+![image](https://github.com/user-attachments/assets/23b5d943-6fa0-43a6-a599-99efe5c012e7)
+![image](https://github.com/user-attachments/assets/16b619f4-47f2-482b-aef8-4a1888e85984)
+![image](https://github.com/user-attachments/assets/96cb224b-eddd-4f78-83de-17d62837aff1)
+![image](https://github.com/user-attachments/assets/1ede4be2-9fb4-4826-a8d3-8fb36b23da38)
+![image](https://github.com/user-attachments/assets/be53766d-310f-498f-a30f-87d2b4be462d)
+![image](https://github.com/user-attachments/assets/9272df55-aa20-47fd-bedf-f080000fcc8b)
+![image](https://github.com/user-attachments/assets/4cf24aa6-a90f-4c09-83a6-128bb1641955)
+
+
+
 
