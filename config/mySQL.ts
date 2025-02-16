@@ -11,7 +11,6 @@ const sequelize = new Sequelize(
     dialect: "mysql",
     host: process.env.DB_HOST || "localhost",
     port: Number(process.env.DB_PORT) || 23701,
-    logging: process.env.NODE_ENV === "development" ? console.log : false,
   }
 );
 
