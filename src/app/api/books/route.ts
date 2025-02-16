@@ -35,9 +35,9 @@ export async function GET() {
   try {
     // await connectDB();
 
-    const books = Book.findAll();
+    const books = await Book.findAll();
 
-    return NextResponse.json({ books }, { status: 200 });
+    return NextResponse.json(books);
   } catch (error) {
     console.error(error);
     return NextResponse.json(
