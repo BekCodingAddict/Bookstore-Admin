@@ -1,9 +1,9 @@
 import Book from "@models/Book";
-import { Op } from "sequelize";
+// import { Op } from "sequelize";
 import { connectDB } from "@utils/connectToDb";
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (req: NextRequest) => {
+export const GET = async () => {
   return NextResponse.json(
     {
       books: [
