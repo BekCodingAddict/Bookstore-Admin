@@ -3,6 +3,7 @@ import { Op } from "sequelize";
 import { connectDB } from "@utils/connectToDb";
 import { NextRequest, NextResponse } from "next/server";
 
+//TEST 1 WORK
 // import { NextResponse } from "next/server";
 
 // export async function GET() {
@@ -26,61 +27,79 @@ import { NextRequest, NextResponse } from "next/server";
 //   });
 // }
 
-export async function GET(req: NextRequest) {
-  try {
-    const search = req.nextUrl.searchParams.get("search");
+//TEST 2
 
+export async function GET() {
+  try {
     await connectDB();
 
-    let books;
+    const books = await Book.findAll();
 
-    if (!search) {
-      books = await Book.findAll();
-
-      if (!books || books.length === 0) {
-        return NextResponse.json(
-          { message: "Books not found!" },
-          { status: 404, headers: { "Content-Type": "application/json" } }
-        );
-      }
-    } else {
-      books = await Book.findAll({
-        where: {
-          [Op.or]: [
-            { author: { [Op.like]: `%${search}%` } },
-            { title: { [Op.like]: `%${search}%` } },
-          ],
-        },
-      });
-
-      if (!books || books.length === 0) {
-        return NextResponse.json(
-          { books: [], message: "Books not found!" },
-          {
-            status: 404,
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-      }
-    }
-
-    return NextResponse.json(
-      { books },
-      {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    return NextResponse.json({ books }, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
       {
         message: `Failed to fetch books! Error: ${error}`,
       },
-      { status: 500, headers: { "Content-Type": "application/json" } }
+      { status: 500 }
     );
   }
 }
+
+// export async function GET(req: NextRequest) {
+//   try {
+//     const search = req.nextUrl.searchParams.get("search");
+
+//     await connectDB();
+
+//     let books;
+
+//     if (!search) {
+//       books = await Book.findAll();
+
+//       if (!books || books.length === 0) {
+//         return NextResponse.json(
+//           { message: "Books not found!" },
+//           { status: 404 }
+//         );
+//       }
+//     } else {
+//       books = await Book.findAll({
+//         where: {
+//           [Op.or]: [
+//             { author: { [Op.like]: `%${search}%` } },
+//             { title: { [Op.like]: `%${search}%` } },
+//           ],
+//         },
+//       });
+
+//       if (!books || books.length === 0) {
+//         return NextResponse.json(
+//           { books: [], message: "Books not found!" },
+//           {
+//             status: 404,
+//           }
+//         );
+//       }
+//     }
+
+//     return NextResponse.json(
+//       { books },
+//       {
+//         status: 200,
+//       }
+//     );
+//   } catch (error) {
+//     console.error(error);
+//     return NextResponse.json(
+//       {
+//         message: `Failed to fetch books! Error: ${error}`,
+//       },
+//       { status: 500 }
+//     );
+//   }
+// }
 
 // export const POST = async (req: NextRequest) => {
 //   try {
