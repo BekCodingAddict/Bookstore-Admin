@@ -153,7 +153,7 @@ npm run dev
 ```
 2. Dashboard 에는 Order,Users,Settings page들을 UI 디자인만 구현해 났습니다. Interactivity가 없습니다!
 3. Dashboard에 로그인 할 떄 까자(FAke)user 정보로 고그인 할 수 있게 구현했습니다. Authentication and Authorization 기능 없습니다.
-4. 배포된 URL에 방문하시면 Database에서 데이터를 가져 오는데 문제가 있는 것 같습니다.아직 해결 못 했습니다. 그런데 Local Envoirment VsCode에 다 잘 실행되고 있습니다.
+4. 배포된 URL에 방문하시면 Database에서 데이터를 가져 오는데 문제가 있는 것 같습니다.MySQL 사용했기 떄문에 DATABASE 다로 HOSTING 했습니다. 그런데 Vercel로 배포하면 Database에서 데이터를 안 가져옵니다.여러번 노력했지만 아직 해결 못 했습니다.쇱게 MySQL 대신 Mongoose 썼으면는 이런 문제 었었을까 싶습니다.  그런데 Local Envoirment VsCode에 다 잘 실행되고 있습니다.MySQL WorkBranch에서도 HOSTING 했던 데이터 연력이 잘 되었습니다.  문제는 Vercel과 제가 MySQL Hosting 했던 Railway configration에 문제가 있듯 합니다. 아무튼 배포된 URL로 Online hosted MySQL DATABASE 연결을 아직도 못 했습니다.
    
 
 ## 에러 정리 
