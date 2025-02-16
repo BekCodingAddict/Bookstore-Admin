@@ -41,7 +41,10 @@ export const GET = async (req: NextRequest) => {
       }
     }
 
-    return new NextResponse(JSON.stringify(books), { status: 200 });
+    return new NextResponse(JSON.stringify(books), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
     console.error(error);
     return new NextResponse(

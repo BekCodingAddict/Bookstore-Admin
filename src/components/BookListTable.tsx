@@ -27,7 +27,7 @@ const BookListTable = () => {
     if (debounceTimeout.current) {
       clearTimeout(debounceTimeout.current);
     }
-    debounceTimeout.current = setTimeout(() => debouncedSearch(value), 1000);
+    debounceTimeout.current = setTimeout(() => debouncedSearch(value), 500);
   };
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const BookListTable = () => {
       try {
         const response = await fetch("/api/books");
         const books = await response.json();
-
+        console.log(books);
         if (!response.ok) {
           console.log("Books not found");
           return [];
