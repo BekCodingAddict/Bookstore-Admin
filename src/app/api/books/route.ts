@@ -1,7 +1,9 @@
-import Book from "@models/Book";
+// import Book from "@models/Book";
+// // import { Op } from "sequelize";
+// import { connectDB } from "@utils/connectToDb";
+// import { NextRequest, NextResponse } from "next/server";
 // import { Op } from "sequelize";
-import { connectDB } from "@utils/connectToDb";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 export async function GET() {
   return NextResponse.json({
@@ -76,26 +78,26 @@ export async function GET() {
 //   }
 // };
 
-export const POST = async (req: NextRequest) => {
-  try {
-    await connectDB();
-    const bookData = await req.json();
+// export const POST = async (req: NextRequest) => {
+//   try {
+//     await connectDB();
+//     const bookData = await req.json();
 
-    console.log(bookData);
+//     console.log(bookData);
 
-    const newBook = await Book.create(bookData);
+//     const newBook = await Book.create(bookData);
 
-    return new NextResponse(
-      JSON.stringify({ message: "Book created successfully", book: newBook }),
-      { status: 201 }
-    );
-  } catch (error) {
-    console.error("Error creating book:", error);
-    return new NextResponse(
-      JSON.stringify({
-        message: `Failed to fetch books! Error: ${error}`,
-      }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
-  }
-};
+//     return new NextResponse(
+//       JSON.stringify({ message: "Book created successfully", book: newBook }),
+//       { status: 201 }
+//     );
+//   } catch (error) {
+//     console.error("Error creating book:", error);
+//     return new NextResponse(
+//       JSON.stringify({
+//         message: `Failed to fetch books! Error: ${error}`,
+//       }),
+//       { status: 500, headers: { "Content-Type": "application/json" } }
+//     );
+//   }
+// };
