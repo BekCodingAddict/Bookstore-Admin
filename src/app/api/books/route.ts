@@ -34,7 +34,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    await connectDB();
+    // await connectDB();
 
     const books = await Book.findAll();
 

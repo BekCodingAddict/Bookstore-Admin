@@ -1,18 +1,18 @@
 import sequelize from "../config/mySQL";
-// let isConnected = false;
+let isConnected = false;
 
 export const connectDB = async () => {
-  // if (isConnected) {
-  //   console.log("MongoDB is already connected!");
-  //   return;
-  // }
+  if (isConnected) {
+    console.log("MongoDB is already connected!");
+    return;
+  }
 
   try {
     await sequelize.authenticate();
-    console.log("MySQL connected successfully.");
+    console.log("Database connected successfully.");
     await sequelize.sync();
 
-    // isConnected = true;
+    isConnected = true;
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }
