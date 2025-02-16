@@ -3,7 +3,7 @@ import Book from "@models/Book";
 import { connectDB } from "@utils/connectToDb";
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async () => {
+export async function GET() {
   return NextResponse.json(
     {
       books: [
@@ -203,7 +203,7 @@ export const GET = async () => {
     },
     { status: 200 }
   );
-};
+}
 // export const GET = async (req: NextRequest) => {
 //   try {
 //     const search = req.nextUrl.searchParams.get("search");
