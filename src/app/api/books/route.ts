@@ -3,7 +3,6 @@
 // import { connectDB } from "@utils/connectToDb";
 // import { NextRequest, NextResponse } from "next/server";
 import Book from "@models/Book";
-import { connectDB } from "@utils/connectToDb";
 import { NextResponse } from "next/server";
 
 //TEST 1 WORK
