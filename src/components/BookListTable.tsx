@@ -34,15 +34,16 @@ const BookListTable = () => {
     const fetchAllBooks = async () => {
       try {
         const response = await fetch("/api/books");
-        const books = await response.json();
-        console.log(books);
+
         if (!response.ok) {
-          console.log("Books not found");
-          return [];
+          throw new Error(`Error fetching books: ${response.statusText}`);
         }
+
+        const books = await response.json();
+
         setBooks(books);
       } catch (error) {
-        console.log("Failed to fetch books! Error:" + error);
+        console.log("Failed to fetch books! Error:", error);
       }
     };
 
