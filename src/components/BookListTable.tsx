@@ -14,26 +14,6 @@ const BookListTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [books, setBooks] = useState([]);
 
-  useEffect(() => {
-    const fetchAllBooks = async () => {
-      try {
-        const response = await fetch("/api/books");
-
-        if (!response.ok) {
-          throw new Error(`Error fetching books: ${response.statusText}`);
-        }
-
-        const books = await response.json();
-
-        setBooks(books);
-      } catch (error) {
-        console.log("Failed to fetch books! Error:", error);
-      }
-    };
-
-    fetchAllBooks();
-  }, []);
-
   const debouncedSearch = async (term: string) => {
     const response = await fetch(`/api/books?search=${term}`);
     const data = await response.json();
@@ -52,6 +32,26 @@ const BookListTable = () => {
       500
     );
   };
+
+  useEffect(() => {
+    const fetchAllBooks = async () => {
+      try {
+        const response = await fetch("/api/books");
+
+        if (!response.ok) {
+          throw new Error(`Error fetching books: ${response.statusText}`);
+        }
+
+        const books = await response.json();
+
+        setBooks(books.books);
+      } catch (error) {
+        console.log("Failed to fetch books! Error:", error);
+      }
+    };
+
+    fetchAllBooks();
+  }, []);
 
   return (
     <div className="flex flex-col gap-2 ">
