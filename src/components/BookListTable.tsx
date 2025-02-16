@@ -27,7 +27,10 @@ const BookListTable = () => {
     if (debounceTimeout.current) {
       clearTimeout(debounceTimeout.current);
     }
-    debounceTimeout.current = setTimeout(() => debouncedSearch(value), 500);
+    debounceTimeout.current = setTimeout(
+      async () => await debouncedSearch(value),
+      500
+    );
   };
 
   useEffect(() => {

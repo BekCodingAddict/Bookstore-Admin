@@ -1,22 +1,25 @@
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 
-export function middleware(req: NextRequest) {
-  const response = NextResponse.next();
+export function middleware() {
+  // retrieve the current response
+  const res = NextResponse.next();
 
-  response.headers.set("Access-Control-Allow-Origin", "*");
-  response.headers.set(
+  // add the CORS headers to the response
+  res.headers.append("Access-Control-Allow-Credentials", "true");
+  res.headers.append("Access-Control-Allow-Origin", "*"); // replace this your actual origin
+  res.headers.append(
     "Access-Control-Allow-Methods",
-    "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+    "GET,DELETE,PATCH,POST,PUT"
   );
-  response.headers.set(
+  res.headers.append(
     "Access-Control-Allow-Headers",
-    "X-Requested-With, Content-Type, Authorization"
+    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
   );
 
-  return response;
+  return res;
 }
 
+// specify the path regex to apply the middleware to
 export const config = {
-  matcher: "/api/:path*", // Apply middleware only to API routes
+  matcher: "/api/:path*",
 };
