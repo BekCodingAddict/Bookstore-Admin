@@ -1,11 +1,11 @@
 import Book from "@models/Book";
-// import { Op } from "sequelize";
+import { Op } from "sequelize";
 import { connectDB } from "@utils/connectToDb";
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async () => {
-  return new NextResponse(
-    JSON.stringify({
+export const GET = async (req: NextRequest) => {
+  return NextResponse.json(
+    {
       books: [
         {
           id: 1,
@@ -200,8 +200,8 @@ export const GET = async () => {
           updatedAt: "2025-02-16T02:23:10.000Z",
         },
       ],
-    }),
-    { status: 200, headers: { "Content-Type": "application/json" } }
+    },
+    { status: 200 }
   );
 };
 // export const GET = async (req: NextRequest) => {

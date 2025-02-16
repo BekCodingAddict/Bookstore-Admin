@@ -14,25 +14,6 @@ const BookListTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [books, setBooks] = useState([]);
 
-  const debouncedSearch = async (term: string) => {
-    const response = await fetch(`/api/books?search=${term}`);
-    const data = await response.json();
-    setBooks(data);
-  };
-
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setSearchTerm(value);
-
-    if (debounceTimeout.current) {
-      clearTimeout(debounceTimeout.current);
-    }
-    debounceTimeout.current = setTimeout(
-      async () => await debouncedSearch(value),
-      500
-    );
-  };
-
   useEffect(() => {
     const fetchAllBooks = async () => {
       try {
@@ -52,6 +33,25 @@ const BookListTable = () => {
 
     fetchAllBooks();
   }, []);
+
+  const debouncedSearch = async (term: string) => {
+    const response = await fetch(`/api/books?search=${term}`);
+    const data = await response.json();
+    setBooks(data);
+  };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
+    }
+    debounceTimeout.current = setTimeout(
+      async () => await debouncedSearch(value),
+      500
+    );
+  };
 
   return (
     <div className="flex flex-col gap-2 ">
