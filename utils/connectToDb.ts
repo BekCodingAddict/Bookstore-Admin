@@ -12,7 +12,7 @@ export const connectDB = async () => {
     console.log("Database connected successfully.");
     await sequelize.sync();
 
-    isConnected = false;
+    isConnected = true;
     console.log("MySQL is Connected!");
   } catch (error) {
     console.error("Unable to connect to the database:", error);
